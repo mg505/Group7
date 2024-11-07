@@ -2,7 +2,8 @@
  * 
  */
 /**
- * 
+ * @author zainabpatel
+ *
  */
-module Group7 {
+module group7 {
 }
