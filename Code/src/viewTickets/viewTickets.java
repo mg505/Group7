@@ -1,60 +1,57 @@
 package viewTickets;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.Map.Entry;
+import PurchaseBasket.Basket;
 
 public class viewTickets {
-	
-    private HashMap<Integer, String[]> tickets;
-	private ArrayList<Integer> basket;
 
-    public viewTickets(HashMap<Integer, String[]> tickets, ArrayList<Integer> basket) {
-        this.tickets = tickets;
+    private HashMap<Integer, String[]> tickets;  // Stores ticket details (route, time, price)
+    private HashMap<Integer, Double> ticketPrices; // Stores ticket prices
+    private Basket basket;
+
+    public viewTickets(Basket basket) {
         this.basket = basket;
+        tickets = new HashMap<>();
+        ticketPrices = new HashMap<>();
+        populateTickets();
     }
 
+    // Populate tickets with IDs, routes, times, and prices
+    public void populateTickets() {
+        tickets.put(1, new String[]{"Route A", "10:00 AM", "50.0"});
+        tickets.put(2, new String[]{"Route B", "12:00 PM", "30.0"});
+        tickets.put(3, new String[]{"Route C", "02:00 PM", "80.0"});
+
+        ticketPrices.put(1, 50.0);  // Ticket 1 costs £50
+        ticketPrices.put(2, 30.0);  // Ticket 2 costs £30
+        ticketPrices.put(3, 80.0);  // Ticket 3 costs £80
+    }
+
+    // Show tickets to the user
     public String showTickets() {
-    	StringBuilder output = new StringBuilder();
+        StringBuilder output = new StringBuilder();
 
-        // Iterate through the HashMap
-        for (Entry<Integer, String[]> entry : tickets.entrySet()) {
-            Integer ticketId = entry.getKey();          // Key (ticket ID)
-            String[] details = entry.getValue();       // Value (ticket details array)
-
-            // Append ticket details to output
-            output.append("Ticket ID: ").append(ticketId).append("\n")
-                  .append("Route: ").append(details[0]).append("\n")
-                  .append("Time: ").append(details[1]).append("\n")
-                  .append("Price: ").append(details[2]).append("\n")
-                  .append("---------------------------------\n");
+        for (Integer ticketId : tickets.keySet()) {
+            String[] details = tickets.get(ticketId);
+            output.append("Ticket ID: ").append(ticketId)
+                  .append("\nRoute: ").append(details[0])
+                  .append("\nTime: ").append(details[1])
+                  .append("\nPrice: £").append(details[2])
+                  .append("\n---------------------------------\n");
         }
 
         return output.toString();
     }
-    
-    public void addToBasket(int ticket_id) {
-    	basket.add(ticket_id);
-    	System.out.println("Ticket ID " + ticket_id + " added to basket.");
- 
-    }
 
-	public void nav() {
-		
-		Scanner reader = new Scanner(System.in);
-        int option;
-        do {
-            System.out.println("Enter 0 to go back to dashboard, or enter ticket id to add to basket:");
-            option = reader.nextInt();
-            if (option != 0) {
-                if (tickets.containsKey(option)) {
-                    addToBasket(option);
-                } else {
-                    System.out.println("Invalid Ticket ID! Please try again.");
-                }
-            }
-        } while (option != 0);
-       
+    // Add ticket to the basket
+    public void addToBasket(int ticketId) {
+        if (tickets.containsKey(ticketId)) {
+            String[] ticketDetails = tickets.get(ticketId);
+            double price = ticketPrices.get(ticketId);  // Get price from ticketPrices
+            basket.addTicket(ticketId, ticketDetails, price);  // Add ticket to basket with details
+        } else {
+            System.out.println("Invalid Ticket ID!");
+        }
     }
 }

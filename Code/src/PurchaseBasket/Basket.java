@@ -1,115 +1,63 @@
 package PurchaseBasket;
 
 import java.util.HashMap;
-import java.util.Scanner;
 
 public class Basket {
-    private HashMap<Integer, String[]> tickets; // Stores ticket details
-    private HashMap<Integer, Integer> basket;  // Stores ticket ID and quantity
 
-    public Basket(HashMap<Integer, String[]> tickets, HashMap<Integer, Integer> basket) {
-        this.tickets = tickets;
-        this.basket = basket;
+    private HashMap<Integer, String[]> basketItems;  // Store ticket ID and its details
+    private double totalCost;
+
+    public Basket() {
+        basketItems = new HashMap<>();
+        totalCost = 0.0;
     }
 
-    public void openBasket() {
-        Scanner reader = new Scanner(System.in);
-        int choice;
-
-        do {
-            System.out.println("\n------------- BASKET -------------");
-            viewBasket();
-            System.out.println("1. Increase quantity");
-            System.out.println("2. Decrease quantity");
-            System.out.println("3. Remove a ticket");
-            System.out.println("4. View total cost");
-            System.out.println("5. Exit");
-            System.out.print("Enter your choice: ");
-            choice = reader.nextInt();
-
-            switch (choice) {
-                case 1:
-                    adjustQuantity(reader, true); // Increase quantity
-                    break;
-                case 2:
-                    adjustQuantity(reader, false); // Decrease quantity
-                    break;
-                case 3:
-                    removeTicket(reader);
-                    break;
-                case 4:
-                    calculateTotal();
-                    break;
-                case 5:
-                    System.out.println("Exiting Basket...");
-                    break;
-                default:
-                    System.out.println("Invalid choice. Try again.");
-            }
-        } while (choice != 5);
+    // Add ticket to the basket with details
+    public void addTicket(int ticketId, String[] ticketDetails, double price) {
+        basketItems.put(ticketId, ticketDetails);  // Add ticket details to the basket
+        totalCost += price;  // Add price to the total cost
+        System.out.println("Ticket ID " + ticketId + " added to basket.");
     }
 
-    private void viewBasket() {
-        if (basket.isEmpty()) {
-            System.out.println("Basket is empty!");
+    // Display all items in the basket
+    public void displayBasket() {
+        if (basketItems.isEmpty()) {
+            System.out.println("Your basket is empty.");
         } else {
-            System.out.println("Your Basket:");
-            for (Integer ticketId : basket.keySet()) {
-                String[] ticket = tickets.get(ticketId);
-                int quantity = basket.get(ticketId);
-                System.out.println("Ticket ID: " + ticketId);
-                System.out.println("Route: " + ticket[0]);
-                System.out.println("Time: " + ticket[1]);
-                System.out.println("Price: £" + ticket[2]);
-                System.out.println("Quantity: " + quantity);
-                System.out.println("---------------------------------");
+            System.out.println("Tickets in Basket:");
+            for (Integer ticketId : basketItems.keySet()) {
+                String[] details = basketItems.get(ticketId);
+                System.out.println("Ticket ID: " + ticketId + " - Route: " + details[0] + " - Time: " + details[1] + " - Price: £" + details[2]);
             }
         }
     }
 
-    private void adjustQuantity(Scanner reader, boolean increase) {
-        System.out.print("Enter Ticket ID to " + (increase ? "increase" : "decrease") + " quantity: ");
-        int ticketId = reader.nextInt();
-        if (basket.containsKey(ticketId)) {
-            int quantity = basket.get(ticketId);
-            quantity = increase ? quantity + 1 : quantity - 1;
-            if (quantity > 0) {
-                basket.put(ticketId, quantity);
-                System.out.println("Updated quantity for Ticket ID " + ticketId + " to " + quantity);
-            } else {
-                basket.remove(ticketId);
-                System.out.println("Removed Ticket ID " + ticketId + " as quantity reached zero.");
-            }
-        } else {
-            System.out.println("Ticket ID not found in the basket.");
-        }
+    // Calculate total cost of items in the basket
+    public double calculateTotalCost() {
+        return totalCost;
     }
 
-    private void removeTicket(Scanner reader) {
-        System.out.print("Enter Ticket ID to remove: ");
-        int ticketId = reader.nextInt();
-        if (basket.containsKey(ticketId)) {
-            basket.remove(ticketId);
-            System.out.println("Removed Ticket ID " + ticketId + " from the basket.");
-        } else {
-            System.out.println("Ticket ID not found in the basket.");
+    // Generate email body with ticket details
+    public String generateEmailBody(double totalCost) {
+        StringBuilder emailBody = new StringBuilder();
+        emailBody.append("Thank you for your purchase! Here are your ticket details:\n\n");
+
+        for (Integer ticketId : basketItems.keySet()) {
+            String[] details = basketItems.get(ticketId);
+            emailBody.append("Ticket ID: ").append(ticketId)
+                     .append(" - Route: ").append(details[0])
+                     .append(" - Time: ").append(details[1])
+                     .append(" - Price: £").append(details[2]).append("\n");
         }
+
+        emailBody.append("\nTotal Cost: £").append(totalCost);
+        return emailBody.toString();
     }
 
-    private void calculateTotal() {
-        if (basket.isEmpty()) {
-            System.out.println("Basket is empty!");
-            return;
-        }
-
-        double totalCost = 0.0;
-        for (Integer ticketId : basket.keySet()) {
-            String[] ticket = tickets.get(ticketId);
-            int quantity = basket.get(ticketId);
-            double price = Double.parseDouble(ticket[2]);
-            totalCost += price * quantity;
-        }
-
-        System.out.println("Total Cost of Tickets: £" + totalCost);
+    // Clear the basket after checkout
+    public void clearBasket() {
+        basketItems.clear();
+        totalCost = 0.0;
+        System.out.println("Basket cleared.");
     }
 }

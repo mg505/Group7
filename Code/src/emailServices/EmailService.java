@@ -5,11 +5,9 @@ import javax.mail.*;
 import javax.mail.internet.*;
 
 public class EmailService {
-	
-	
-	//Email address and app password used to send the email
-	private static final String senderEmail = "mirandazoegriffith@gmail.com"; // Your email
-	private static final String senderPassword = "cnke agep oqlu exkt";    
+
+    private static final String senderEmail = "your-email@gmail.com"; // Your email
+    private static final String senderPassword = "your-app-password"; // App password
 
     public void sendEmail(String recipientEmail, String subject, String messageBody) {
         // Set up email server properties
@@ -38,12 +36,10 @@ public class EmailService {
             // Send the email
             Transport.send(message);
             System.out.println("Email sent successfully to " + recipientEmail);
-            
-            //If something goes wrong, the system will present an error message
+
         } catch (MessagingException e) {
             e.printStackTrace();
             System.out.println("Error occurred while sending email.");
         }
     }
 }
-
