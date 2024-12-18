@@ -1,6 +1,7 @@
 package PurchaseBasket;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Basket {
 
@@ -59,5 +60,10 @@ public class Basket {
         basketItems.clear();
         totalCost = 0.0;
         System.out.println("Basket cleared.");
+    }
+
+    // Get all tickets in the basket
+    public Map<Integer, String[]> getTickets() {
+        return basketItems;
     }
 }

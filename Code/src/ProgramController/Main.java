@@ -1,12 +1,11 @@
 package ProgramController;
 
+import java.util.Scanner;
 import DashboardCode.Dashboard;
-import login.LoginSystem;
-import viewTickets.viewTickets;
 import PurchaseBasket.Basket;
 import emailServices.EmailService;
-
-import java.util.*;
+import login.LoginSystem;
+import viewTickets.viewTickets;
 
 public class Main {
     public static void main(String[] args) {
@@ -54,8 +53,8 @@ public class Main {
                         System.out.print("Enter your email: ");
                         String email = scanner.next();
                         double totalCost = basket.calculateTotalCost();
-                        emailService.sendEmail(email, "Ticket Confirmation",
-                                basket.generateEmailBody(totalCost));
+                        String emailBody = emailService.generateTicketConfirmationMessage(basket.getTickets(), totalCost);
+                        emailService.sendEmail(email, "Ticket Confirmation", emailBody);
                         System.out.println("Checkout successful! Confirmation email sent.");
                         basket.clearBasket();  // Clear the basket after checkout
                     }

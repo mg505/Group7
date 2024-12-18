@@ -1,35 +1,43 @@
 package emailServices;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SendEmail {
-	  public static void main(String[] args) {
-		  // Replace with actual variables when ready
-	        String userEmail = "miranda@mirandagriffith.com"; 
-	        String departureTime = "10:00 AM, December 2, 2024"; 
-	        String seatNumber = "A12";                      
-	        String startStation = "St.Pancreas";              
-	        String destination = "Leicester"; 
 
-	        // Email subject and body
-	        String subject = "Train Ticket Confirmation";
-	        String message = generateTicketConfirmationMessage(userEmail,departureTime, seatNumber, startStation,destination);
+    public static void main(String[] args) {
+        // Initialize the EmailService
+        EmailService emailService = new EmailService();
 
-	        // Creates an instance of EmailService and sends the email
-	        EmailService emailService = new EmailService();
-	        emailService.sendEmail(userEmail, subject, message);
+        // Test Data
+        String recipientEmail = "miranda@mirandagriffith.com";  // Replace with your test email
+        String subject = "Train Ticket Confirmation";
 
-	        System.out.println("Train ticket confirmation email sent to " + userEmail);
-	    }
+        // Simulate ticket details
+        Map<Integer, String[]> tickets = new HashMap<>();
+        tickets.put(1, new String[]{"Route A", "10:00 AM", "50.0"});
+        tickets.put(2, new String[]{"Route B", "2:00 PM", "30.0"});
 
-	    private static String generateTicketConfirmationMessage(String userEmail,String startStation,String destination ,String departureTime, String seatNumber) {
-	        return "Dear Customer,\n\n" +
-	               "Thank you for booking a ticket with us! Here are your booking details:\n\n" +
-	               "Boarding Station: " + startStation + "\n\n" +
-	               "Destination: " + destination + "\n\n" +
-	               "Departure Time: " + departureTime + "\n" +
-	               "Seat Number: " + seatNumber + "\n" +
-	               "We hope you have a pleasant and safe journey!\n\n" +
-	               "Best regards,\nTrain Booking System Team";
-	    }
-	
+        // Calculate total cost
+        double totalCost = tickets.values().stream()
+                .mapToDouble(details -> Double.parseDouble(details[2]))
+                .sum();
 
+        // Generate email body
+        String emailBody = emailService.generateTicketConfirmationMessage(tickets, totalCost);
+
+        // Print email details for debugging
+        System.out.println("Recipient Email: " + recipientEmail);
+        System.out.println("Email Subject: " + subject);
+        System.out.println("Email Body:\n" + emailBody);
+
+        // Send the email
+        try {
+            emailService.sendEmail(recipientEmail, subject, emailBody);
+            System.out.println("Test email sent successfully.");
+        } catch (Exception e) {
+            System.out.println("An error occurred while sending the email:");
+            e.printStackTrace();
+        }
+    }
 }

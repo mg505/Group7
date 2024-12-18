@@ -1,7 +1,7 @@
 package viewTickets;
 
 import java.util.HashMap;
-import java.util.Scanner;
+
 import PurchaseBasket.Basket;
 
 public class viewTickets {

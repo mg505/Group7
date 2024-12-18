@@ -13,7 +13,7 @@ public class Registration {
                 return false; // Username already exists
             }
         }
-        
+
         // Register the user
         User newUser = new User(username, password);
         registeredUsers.add(newUser);
