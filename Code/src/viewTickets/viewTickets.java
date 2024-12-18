@@ -1,7 +1,6 @@
 package viewTickets;
 
 import java.util.HashMap;
-
 import PurchaseBasket.Basket;
 
 public class viewTickets {
@@ -53,5 +52,15 @@ public class viewTickets {
         } else {
             System.out.println("Invalid Ticket ID!");
         }
+    }
+
+    // Getter for tickets
+    public HashMap<Integer, String[]> getTickets() {
+        return tickets;
+    }
+
+    // Setter for tickets (if needed)
+    public void setTickets(HashMap<Integer, String[]> tickets) {
+        this.tickets = tickets;
     }
 }

@@ -12,9 +12,7 @@ public class Dashboard {
         currentTickets = new ArrayList<>();
         expiredTickets = new ArrayList<>();
 
-        //currentTickets.add("Concert A - $50 - Date: 15/12/2024");
-        //currentTickets.add("Movie Premiere - $25 - Date: 20/12/2024");
-
+        // Example of expired tickets
         expiredTickets.add("Theater Play - $30 - Date: 10/11/2024");
     }
 
@@ -42,5 +40,15 @@ public class Dashboard {
             System.out.println("- " + ticket);
         }
         System.out.println();
+    }
+
+    // Add purchased tickets to current tickets
+    public void addPurchasedTickets(List<String> purchasedTickets) {
+        currentTickets.addAll(purchasedTickets);
+    }
+
+    // Get the current tickets
+    public List<String> getCurrentTickets() {
+        return currentTickets;
     }
 }
