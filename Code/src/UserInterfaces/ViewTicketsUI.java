@@ -4,7 +4,6 @@ import login.User;
 import viewTickets.viewTickets;
 import PurchaseBasket.Basket;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,9 +17,11 @@ public class ViewTicketsUI {
     private JComboBox<String> ticketComboBox;
     private Basket basket;
     private viewTickets viewTickets;
+    private DashboardUI dashboardUI;
 
-    public ViewTicketsUI(Basket basket) {
+    public ViewTicketsUI(Basket basket, DashboardUI dashboardUI) {
         this.basket = basket;
+        this.dashboardUI = dashboardUI;  // Pass the dashboardUI object to navigate back
         viewTickets = new viewTickets(basket);  // Initialize the backend class
         initializeUI();
     }
@@ -80,15 +81,23 @@ public class ViewTicketsUI {
         frame.setVisible(true);
     }
 
-    // Add the selected ticket to the basket
+    // Add the selected ticket to the basket and go back to the dashboard
     private void addSelectedTicketToBasket() {
         int selectedIndex = ticketComboBox.getSelectedIndex() + 1; // ComboBox is 0-indexed, but tickets start from 1
         viewTickets.addToBasket(selectedIndex);  // Add the selected ticket to the basket
         JOptionPane.showMessageDialog(frame, "Ticket added to basket.");
+
+        // After adding the ticket, navigate back to the DashboardUI
+        frame.setVisible(false);  // Hide the current frame
+        dashboardUI.createDashboardUI();  // Show the Dashboard UI again
     }
 
     public static void main(String[] args) {
-        Basket basket = new Basket(); // Create an instance of Basket
-        new ViewTicketsUI(basket);  // Launch the UI to view tickets
+        // Initialize the basket and dashboard
+        Basket basket = new Basket();
+        DashboardUI dashboardUI = new DashboardUI();
+        
+        // Launch the ViewTicketsUI with the basket and dashboardUI
+        new ViewTicketsUI(basket, dashboardUI);  // Pass the DashboardUI object to the constructor
     }
 }

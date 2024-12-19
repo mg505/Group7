@@ -6,26 +6,35 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import PurchaseBasket.Basket;  // Import Basket class for basket functionality
+import viewTickets.viewTickets; 
+import UserInterfaces.PurchaseBasketUI;  // Import the PurchaseBasketUI class for the basket
 
 public class DashboardUI {
 
     private List<String> currentTickets;
     private List<String> expiredTickets;
+    private JFrame frame;  // Make frame a class-level field
+    private Basket basket;  // Basket object to hold the user's basket
 
     public DashboardUI() {
         currentTickets = new ArrayList<>();
         expiredTickets = new ArrayList<>();
+        basket = new Basket();  // Initialize the basket
 
         // Example tickets
-        currentTickets.add("Concert A - $50 - Date: 15/12/2024");
-        currentTickets.add("Movie Premiere - $25 - Date: 20/12/2024");
+        //currentTickets.add("Concert A - $50 - Date: 15/12/2024");
+        //currentTickets.add("Movie Premiere - $25 - Date: 20/12/2024");
 
         expiredTickets.add("Theater Play - $30 - Date: 10/11/2024");
+
+        // Create and display the dashboard UI
+        createDashboardUI();
     }
 
     public void createDashboardUI() {
         // Create the frame for the Dashboard
-        JFrame frame = new JFrame("Ticket Booking Dashboard");
+        frame = new JFrame("Ticket Booking Dashboard");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);  // Set the size of the window
         frame.setLocationRelativeTo(null); // Center the frame
@@ -45,7 +54,7 @@ public class DashboardUI {
         JButton basketButton = new JButton("Basket");
         JButton profileButton = new JButton("Profile");
 
-        // Add Action Listeners to buttons (for now they just show a message)
+        // Add Action Listeners to buttons
         homeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -56,21 +65,14 @@ public class DashboardUI {
         buyTicketsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Buy Tickets functionality to be added...");
-            }
-        });
-
-        aboutButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "About functionality to be added...");
+                openViewTicketsUI();  // Open ViewTicketsUI when clicked
             }
         });
 
         basketButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Basket functionality to be added...");
+                openPurchaseBasketUI();  // Open the PurchaseBasketUI when the "Basket" button is clicked
             }
         });
 
@@ -116,15 +118,41 @@ public class DashboardUI {
         // Add button panel to the top of the frame
         frame.add(buttonPanel, BorderLayout.NORTH);
         // Add ticket panel to the center of the frame
-        frame.add(ticketPanel, BorderLayout.CENTER);
+        JScrollPane scrollPane = new JScrollPane(ticketPanel); // Add scroll functionality for tickets
+        frame.add(scrollPane, BorderLayout.CENTER);
 
         // Make the frame visible
         frame.setVisible(true);
     }
 
+    // Get Basket from DashboardUI
+    public Basket getBasket() {
+        return basket;
+    }
+
+    // This method adds purchased tickets to the currentTickets list
+    public void addPurchasedTickets(List<String> purchasedTickets) {
+        for (String ticket : purchasedTickets) {
+            currentTickets.add(ticket);  // Add the purchased ticket to currentTickets list
+        }
+
+        // Optionally, update the UI or inform the user that the purchase is successful
+        JOptionPane.showMessageDialog(frame, "Tickets successfully added to your current tickets.");
+        createDashboardUI();  // Recreate the UI to reflect the changes (optional)
+    }
+
+    // Opens the ViewTicketsUI
+    private void openViewTicketsUI() {
+        new ViewTicketsUI(basket, this);  // Pass 'this' (current instance of DashboardUI) to ViewTicketsUI constructor
+    }
+
+    // Opens the PurchaseBasketUI to manage the basket
+    private void openPurchaseBasketUI() {
+        new PurchaseBasketUI(this);  // Pass the current instance of DashboardUI to PurchaseBasketUI
+    }
+
+    // Main method to launch the DashboardUI
     public static void main(String[] args) {
-        // Create and display the Dashboard UI
-        DashboardUI dashboardUI = new DashboardUI();
-        dashboardUI.createDashboardUI();
+        new DashboardUI();  // Initialize and display the Dashboard UI
     }
 }

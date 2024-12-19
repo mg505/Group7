@@ -74,14 +74,15 @@ public class SignUpUI {
 
         // Register the user using the LogInSystem class
         logInSystem.registerUser(username, password);
-        JOptionPane.showMessageDialog(frame, "Registration successful. You can now log in.");
-        openLogInUI(); // After successful registration, show the login panel
+        JOptionPane.showMessageDialog(frame, "Registration successful! Redirecting to Dashboard.");
+
+        openDashboardUI(); // After successful registration, show the dashboard panel
     }
 
-    // Open the Log In UI
-    private void openLogInUI() {
+    // Open the Dashboard UI (instead of login UI)
+    private void openDashboardUI() {
         frame.dispose(); // Close the sign-up window
-        new LogInUI(logInSystem); // Open the LogInUI
+        new DashboardUI(); // Open the Dashboard UI after registration
     }
 
     // Open the WelcomePage UI

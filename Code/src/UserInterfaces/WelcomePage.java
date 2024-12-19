@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 public class WelcomePage {
 
     private LoginSystem logInSystem;  // Instance of LoginSystem for use in UIs
+    private JFrame frame;  // Added frame reference
 
     public WelcomePage() {
         this.logInSystem = new LoginSystem(); // Initialize the LoginSystem
@@ -17,7 +18,7 @@ public class WelcomePage {
 
     // Create the frame for the Welcome Page
     private void createWelcomePageUI() {
-        JFrame frame = new JFrame("Train Ticket Service");
+        frame = new JFrame("Train Ticket Service"); // Initialize the frame
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);  // Increased size for a bigger screen
         frame.setLocationRelativeTo(null); // Center the frame
@@ -104,36 +105,24 @@ public class WelcomePage {
 
     // Open the Log In UI
     private void openLogInUI() {
-        // Create the LogInUI instance and open it
-        JFrame frame = new JFrame("Log In");
-        frame.setSize(400, 300);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null); // Center the frame
-        frame.setVisible(true);
-
         // Dispose of the current Welcome Page frame
-        Window window = SwingUtilities.windowForComponent((Component) null);
-        if (window != null) {
-            window.dispose();
+        if (frame != null) {
+            frame.dispose();  // Close the WelcomePage frame
         }
-        new LogInUI(logInSystem); // Open the LogInUI
+
+        // Open the LogInUI
+        new LogInUI(logInSystem);
     }
 
     // Open the Sign Up UI
     private void openSignUpUI() {
-        // Create the SignUpUI instance and open it
-        JFrame frame = new JFrame("Sign Up");
-        frame.setSize(400, 300);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null); // Center the frame
-        frame.setVisible(true);
-
         // Dispose of the current Welcome Page frame
-        Window window = SwingUtilities.windowForComponent((Component) null);
-        if (window != null) {
-            window.dispose();
+        if (frame != null) {
+            frame.dispose();  // Close the WelcomePage frame
         }
-        new SignUpUI(logInSystem); // Open the SignUpUI
+
+        // Open the SignUpUI
+        new SignUpUI(logInSystem);
     }
 
     // Main method to launch the WelcomePage UI

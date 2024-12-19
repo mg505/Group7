@@ -1,5 +1,7 @@
 package login;
 
+import UserInterfaces.DashboardUI;  // Import the DashboardUI
+
 import java.util.ArrayList;
 
 public class LoginSystem {
