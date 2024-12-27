@@ -20,6 +20,13 @@ public class Basket {
         System.out.println("Ticket ID " + ticketId + " added to basket.");
     }
 
+    // Checkout the basket and return the purchased tickets
+    public HashMap<Integer, String[]> checkoutBasket() {
+        HashMap<Integer, String[]> purchasedTickets = new HashMap<>(basketItems);  // Copy current tickets
+        clearBasket();  // Clear the basket after checkout
+        return purchasedTickets;  // Return the purchased tickets
+    }
+
     // Display all items in the basket
     public void displayBasket() {
         if (basketItems.isEmpty()) {

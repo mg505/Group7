@@ -1,40 +1,38 @@
 package UserInterfaces;
-import login.LoginSystem;
-import login.User;
+
 import viewTickets.viewTickets;
+import login.User;
 import PurchaseBasket.Basket;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.Map;
 
 public class ViewTicketsUI {
 
     private JFrame frame;
     private JTextArea ticketsDisplayArea;
-    private JButton addButton;
     private JComboBox<String> ticketComboBox;
+    private Map<Integer, String[]> tickets;
     private Basket basket;
-    private viewTickets viewTickets;
-    private DashboardUI dashboardUI;
+    private User user;
 
-    public ViewTicketsUI(Basket basket, DashboardUI dashboardUI) {
+    public ViewTicketsUI(Basket basket, User loggedInUser) {
         this.basket = basket;
-        this.dashboardUI = dashboardUI;  // Pass the dashboardUI object to navigate back
-        viewTickets = new viewTickets(basket);  // Initialize the backend class
-        initializeUI();
+        this.user = loggedInUser;
+        viewTickets ticketManager = new viewTickets(loggedInUser);
+        this.tickets = ticketManager.getTickets();
+
+        initializeUI(ticketManager);
     }
 
-    // Initialize the UI components
-    private void initializeUI() {
+    private void initializeUI(viewTickets ticketManager) {
         frame = new JFrame("View Tickets");
         frame.setSize(600, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null); // Center the frame
+        frame.setLocationRelativeTo(null);
         frame.setLayout(new BorderLayout());
 
-        // Create the panel for displaying available tickets
         JPanel displayPanel = new JPanel();
         displayPanel.setLayout(new BorderLayout());
         displayPanel.setBorder(BorderFactory.createTitledBorder("Available Tickets"));
@@ -42,62 +40,66 @@ public class ViewTicketsUI {
         ticketsDisplayArea = new JTextArea();
         ticketsDisplayArea.setEditable(false);
         ticketsDisplayArea.setFont(new Font("Arial", Font.PLAIN, 14));
-        ticketsDisplayArea.setText(viewTickets.showTickets());  // Display available tickets in the text area
+        ticketsDisplayArea.setText(formatTicketsForDisplay());
         JScrollPane scrollPane = new JScrollPane(ticketsDisplayArea);
         displayPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // Add the display panel to the frame
         frame.add(displayPanel, BorderLayout.CENTER);
 
-        // Create a panel for ticket selection and the "Add to Basket" button
         JPanel selectionPanel = new JPanel();
         selectionPanel.setLayout(new FlowLayout());
 
-        // Create a combo box to display available ticket IDs
         ticketComboBox = new JComboBox<>();
-        for (Integer ticketId : viewTickets.getTickets().keySet()) {
-            ticketComboBox.addItem("Ticket ID: " + ticketId);
+        for (Integer ticketId : tickets.keySet()) {
+            String[] ticketDetails = tickets.get(ticketId);
+            String displayText = "Ticket ID: " + ticketId + " | Route: " + ticketDetails[0] + " | Time: " + ticketDetails[1] + " | Price: £" + ticketDetails[2];
+            ticketComboBox.addItem(displayText);
         }
 
-        // Create the add button
-        addButton = new JButton("Add to Basket");
+        JButton addButton = new JButton("Add to Basket");
+        JButton homeButton = new JButton("Home");
 
-        // Add action listener for the button
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                addSelectedTicketToBasket();
-            }
-        });
+        addButton.addActionListener(e -> addSelectedTicketToBasket(ticketManager));
+        homeButton.addActionListener(e -> navigateToDashboard());
 
-        // Add combo box and button to the selection panel
         selectionPanel.add(ticketComboBox);
         selectionPanel.add(addButton);
+        selectionPanel.add(homeButton);
 
-        // Add selection panel to the frame
         frame.add(selectionPanel, BorderLayout.SOUTH);
 
-        // Make the frame visible
         frame.setVisible(true);
     }
 
-    // Add the selected ticket to the basket and go back to the dashboard
-    private void addSelectedTicketToBasket() {
-        int selectedIndex = ticketComboBox.getSelectedIndex() + 1; // ComboBox is 0-indexed, but tickets start from 1
-        viewTickets.addToBasket(selectedIndex);  // Add the selected ticket to the basket
-        JOptionPane.showMessageDialog(frame, "Ticket added to basket.");
+    public void navigateToDashboard() {
+        frame.dispose();  // Close the current ViewTicketsUI frame
 
-        // After adding the ticket, navigate back to the DashboardUI
-        frame.setVisible(false);  // Hide the current frame
-        dashboardUI.createDashboardUI();  // Show the Dashboard UI again
+        // Create a new instance of DashboardUI, passing the logged-in user
+        new DashboardUI(this.user);  // Assuming loggedInUser is the user you are passing to the dashboard
     }
 
-    public static void main(String[] args) {
-        // Initialize the basket and dashboard
-        Basket basket = new Basket();
-        DashboardUI dashboardUI = new DashboardUI();
-        
-        // Launch the ViewTicketsUI with the basket and dashboardUI
-        new ViewTicketsUI(basket, dashboardUI);  // Pass the DashboardUI object to the constructor
+    public void addSelectedTicketToBasket(viewTickets ticketManager) {
+        int selectedIndex = ticketComboBox.getSelectedIndex();
+        if (selectedIndex != -1) {
+            Integer ticketId = (Integer) tickets.keySet().toArray()[selectedIndex];
+            ticketManager.addToBasket(ticketId);  // Add ticket to the basket
+            JOptionPane.showMessageDialog(frame, "Ticket added to basket.");
+        } else {
+            JOptionPane.showMessageDialog(frame, "Please select a ticket.");
+        }
+    }
+
+    // This method will format and display the tickets as a string
+    public String formatTicketsForDisplay() {
+        StringBuilder output = new StringBuilder();
+        for (Integer ticketId : tickets.keySet()) {
+            String[] details = tickets.get(ticketId);
+            output.append("Ticket ID: ").append(ticketId)
+                  .append("\nRoute: ").append(details[0])
+                  .append("\nTime: ").append(details[1])
+                  .append("\nPrice: £").append(details[2])
+                  .append("\n---------------------------------\n");
+        }
+        return output.toString();
     }
 }

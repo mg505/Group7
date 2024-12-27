@@ -1,16 +1,16 @@
 package viewTickets;
 
 import java.util.HashMap;
-import PurchaseBasket.Basket;
+import login.User;
 
 public class viewTickets {
 
     private HashMap<Integer, String[]> tickets;  // Stores ticket details (route, time, price)
     private HashMap<Integer, Double> ticketPrices; // Stores ticket prices
-    private Basket basket;
+    private User user;
 
-    public viewTickets(Basket basket) {
-        this.basket = basket;
+    public viewTickets(User user) {
+        this.user = user;
         tickets = new HashMap<>();
         ticketPrices = new HashMap<>();
         populateTickets();
@@ -43,12 +43,12 @@ public class viewTickets {
         return output.toString();
     }
 
-    // Add ticket to the basket
+    // Add ticket to the user's basket
     public void addToBasket(int ticketId) {
         if (tickets.containsKey(ticketId)) {
             String[] ticketDetails = tickets.get(ticketId);
             double price = ticketPrices.get(ticketId);  // Get price from ticketPrices
-            basket.addTicket(ticketId, ticketDetails, price);  // Add ticket to basket with details
+            user.getBasket().addTicket(ticketId, ticketDetails, price);  // Add ticket to the user's basket
         } else {
             System.out.println("Invalid Ticket ID!");
         }

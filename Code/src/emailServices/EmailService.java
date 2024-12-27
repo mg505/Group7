@@ -9,6 +9,7 @@ import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -17,15 +18,15 @@ public class EmailService {
     private static final String senderEmail = "mirandazoegriffith@gmail.com"; 
     private static final String senderPassword = "ltnd cknt kows upyy"; 
 
-    public void sendEmail(String recipientEmail, String subject, String messageBody) {
+    public void sendEmail(String recipientEmail, String subject, String messageBody) throws MessagingException {
         // Set up email server properties
-    	Properties properties = new Properties();
-    	properties.put("mail.smtp.host", "smtp.gmail.com");
-    	properties.put("mail.smtp.port", "465");  // Use port 465 for SSL
-    	properties.put("mail.smtp.auth", "true");
-    	properties.put("mail.smtp.ssl.enable", "true");  // Enable SSL
-    	properties.put("mail.smtp.ssl.trust", "smtp.gmail.com");  // Trust the server's certificate
-    	properties.put("mail.debug", "true");  // Enable debugging
+        Properties properties = new Properties();
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "465");  // Use port 465 for SSL
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.ssl.enable", "true");  // Enable SSL
+        properties.put("mail.smtp.ssl.trust", "smtp.gmail.com");  // Trust the server's certificate
+        properties.put("mail.debug", "true");  // Enable debugging
 
         // Create a session with Gmail using the email and app password
         Session session = Session.getInstance(properties, new Authenticator() {
@@ -36,10 +37,14 @@ public class EmailService {
         });
 
         try {
+            // Validate recipient email address
+            InternetAddress recipientAddress = new InternetAddress(recipientEmail);
+            recipientAddress.validate(); // Throws AddressException if invalid
+
             // Creating the actual email message
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(senderEmail));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmail));
+            message.setRecipient(Message.RecipientType.TO, recipientAddress);
             message.setSubject(subject);
             message.setText(messageBody);
 
@@ -47,9 +52,12 @@ public class EmailService {
             Transport.send(message);
             System.out.println("Email sent successfully to " + recipientEmail);
 
+        } catch (AddressException e) {
+            System.err.println("Invalid email address: " + recipientEmail);
+            throw e; // Rethrow the exception for the test to catch
         } catch (MessagingException e) {
-            e.printStackTrace();
-            System.out.println("Error occurred while sending email.");
+            System.err.println("Error occurred while sending email.");
+            throw e; // Rethrow other messaging exceptions for the test to catch
         }
     }
 

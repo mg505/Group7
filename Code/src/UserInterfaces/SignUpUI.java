@@ -1,6 +1,7 @@
 package UserInterfaces;
 
 import login.LoginSystem;
+import login.User;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,7 +13,7 @@ public class SignUpUI {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton signUpButton;
-    private JButton backButton;  // Changed button name to 'Back'
+    private JButton backButton;
     private LoginSystem logInSystem;
 
     public SignUpUI(LoginSystem logInSystem) {
@@ -22,20 +23,19 @@ public class SignUpUI {
 
     // Initialize the UI components
     private void initializeUI() {
-        // Create the frame
         frame = new JFrame("Sign Up");
         frame.setSize(400, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null); // Center the frame
+        frame.setLocationRelativeTo(null);
         frame.setLayout(new GridLayout(4, 2, 10, 10));
 
         JLabel usernameLabel = new JLabel("Username:");
         usernameField = new JTextField();
         JLabel passwordLabel = new JLabel("Password:");
         passwordField = new JPasswordField();
-        
+
         signUpButton = new JButton("Sign Up");
-        backButton = new JButton("Back");  // Changed button name to 'Back'
+        backButton = new JButton("Back");
 
         signUpButton.addActionListener(new ActionListener() {
             @Override
@@ -47,7 +47,7 @@ public class SignUpUI {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                openWelcomePage();  // Navigate back to the WelcomePage
+                openWelcomePage();
             }
         });
 
@@ -58,7 +58,6 @@ public class SignUpUI {
         frame.add(signUpButton);
         frame.add(backButton);
 
-        // Make the frame visible
         frame.setVisible(true);
     }
 
@@ -72,22 +71,21 @@ public class SignUpUI {
             return;
         }
 
-        // Register the user using the LogInSystem class
-        logInSystem.registerUser(username, password);
+        User newUser = logInSystem.registerUser(username, password);
         JOptionPane.showMessageDialog(frame, "Registration successful! Redirecting to Dashboard.");
 
-        openDashboardUI(); // After successful registration, show the dashboard panel
+        openDashboardUI(newUser);  // Pass the newly registered user
     }
 
-    // Open the Dashboard UI (instead of login UI)
-    private void openDashboardUI() {
-        frame.dispose(); // Close the sign-up window
-        new DashboardUI(); // Open the Dashboard UI after registration
+    // Open the Dashboard UI
+    private void openDashboardUI(User newUser) {
+        frame.dispose();  // Close the sign-up window
+        new DashboardUI(newUser);  // Pass the new user to DashboardUI
     }
 
     // Open the WelcomePage UI
     private void openWelcomePage() {
-        frame.dispose(); // Close the sign-up window
-        new WelcomePage(); // Open the WelcomePage UI
+        frame.dispose();
+        new WelcomePage();
     }
 }

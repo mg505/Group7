@@ -10,7 +10,7 @@ public class SendEmail {
         EmailService emailService = new EmailService();
 
         // Test Data
-        String recipientEmail = "miranda@mirandagriffith.com";  // Replace with your test email
+        String recipientEmail = "mirandazoegriffith@gmail.com";  // Replace with your test email
         String subject = "Train Ticket Confirmation";
 
         // Simulate ticket details

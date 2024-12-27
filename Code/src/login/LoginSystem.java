@@ -1,7 +1,5 @@
 package login;
 
-import UserInterfaces.DashboardUI;  // Import the DashboardUI
-
 import java.util.ArrayList;
 
 public class LoginSystem {
@@ -14,29 +12,29 @@ public class LoginSystem {
         users.add(new User("admin", "password"));  // Predefined user (username: admin, password: password)
     }
 
-    // Register a new user
-    public void registerUser(String username, String password) {
+    // Register a new user and return the User object
+    public User registerUser(String username, String password) {
         // Check if the username already exists
         for (User user : users) {
             if (user.getUsername().equals(username)) {
-                System.out.println("Username already exists!");
-                return;
+                throw new IllegalArgumentException("Username already exists!");
             }
         }
-        // Add new user to the list
-        users.add(new User(username, password));
-        System.out.println("User registered successfully!");
+        // Create and add the new user
+        User newUser = new User(username, password);
+        users.add(newUser);
+        return newUser;
     }
 
-    // Validate login credentials
-    public boolean validateLogin(String username, String password) {
+    // Validate login credentials and return the User object if valid
+    public User validateLogin(String username, String password) {
         // Iterate through the users list to find a match
         for (User user : users) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
-                return true;  // Login successful
+                return user;  // Return the User object on successful login
             }
         }
-        return false;  // Invalid login
+        return null;  // Return null if login fails
     }
 
     // Optional: Getter for users (if needed for other operations)

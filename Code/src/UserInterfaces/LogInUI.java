@@ -1,6 +1,7 @@
 package UserInterfaces;
 
 import login.LoginSystem;
+import login.User;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -63,9 +64,10 @@ public class LogInUI {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
 
-        if (logInSystem.validateLogin(username, password)) {
+        User loggedInUser = logInSystem.validateLogin(username, password);
+        if (loggedInUser != null) {
             JOptionPane.showMessageDialog(frame, "Login successful!");
-            openDashboardUI();  // Open Dashboard after successful login
+            openDashboardUI(loggedInUser);  // Pass the logged-in user
         } else {
             JOptionPane.showMessageDialog(frame, "Invalid credentials, please try again.");
         }
@@ -78,8 +80,8 @@ public class LogInUI {
     }
 
     // Open the Dashboard UI
-    private void openDashboardUI() {
+    private void openDashboardUI(User loggedInUser) {
         frame.dispose();  // Close the Login UI window
-        new DashboardUI();  // Open the Dashboard UI
+        new DashboardUI(loggedInUser);  // Pass the logged-in user to DashboardUI
     }
 }
