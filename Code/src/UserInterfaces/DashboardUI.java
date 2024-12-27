@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 import PurchaseBasket.Basket;
+import TicketDownloadCode.TicketDownloader; // Import the TicketDownloader class
 
 public class DashboardUI {
 
@@ -31,7 +32,7 @@ public class DashboardUI {
         buttonPanel.setBackground(Color.WHITE);
 
         JButton homeButton = new JButton("Home");
-        JButton viewTicketsButton = new JButton("View Tickets"); // Changed from "Buy Tickets" to "View Tickets"
+        JButton viewTicketsButton = new JButton("View Tickets");
         JButton aboutButton = new JButton("About");
         JButton basketButton = new JButton("Basket");
         JButton profileButton = new JButton("Profile");
@@ -59,15 +60,45 @@ public class DashboardUI {
         currentTicketsLabel.setFont(new Font("Arial", Font.BOLD, 16));
         ticketPanel.add(currentTicketsLabel);
 
+        // Add current tickets to the panel with download buttons
         for (String ticket : loggedInUser.getCurrentTickets()) {
-            JLabel ticketLabel = new JLabel("- " + ticket);
-            ticketPanel.add(ticketLabel);
+            // Assuming each ticket has an ID, route, time, and price
+            String ticketId = "123";  // Replace with actual ticket ID
+            String route = "Route A";  // Replace with actual route
+            String time = "10:00 AM";  // Replace with actual time
+            String price = "50.00";    // Replace with actual price
+
+            JPanel ticketItemPanel = new JPanel();
+            ticketItemPanel.setLayout(new BorderLayout());
+            ticketItemPanel.setBackground(Color.WHITE);
+
+            // Create ticket details and button
+            JLabel ticketLabel = new JLabel("<html><b>Ticket:</b> " + ticket + "</html>");
+            JButton downloadButton = new JButton("Download");
+
+            // Set a fixed size for the download button
+            downloadButton.setPreferredSize(new Dimension(40, 40)); // Fixed width and height
+
+            // Add action listener to download button
+            downloadButton.addActionListener(e -> 
+                TicketDownloader.downloadTicket(frame, ticketId, route, time, price)
+            );
+
+            // Add details and button to the ticket panel
+            ticketItemPanel.add(ticketLabel, BorderLayout.CENTER);
+            ticketItemPanel.add(downloadButton, BorderLayout.EAST);
+
+            // Add some spacing
+            ticketItemPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+            ticketPanel.add(ticketItemPanel);
         }
 
         JLabel expiredTicketsLabel = new JLabel("Expired Tickets:");
         expiredTicketsLabel.setFont(new Font("Arial", Font.BOLD, 16));
         ticketPanel.add(expiredTicketsLabel);
 
+        // Add expired tickets to the panel (no download button for expired tickets in this case)
         for (String ticket : loggedInUser.getExpiredTickets()) {
             JLabel ticketLabel = new JLabel("- " + ticket);
             ticketPanel.add(ticketLabel);
@@ -80,8 +111,6 @@ public class DashboardUI {
 
         frame.setVisible(true);  // Make the frame visible
     }
-
-   
 
     // Opens the ticket browsing UI
     public void openViewTicketsUI() {

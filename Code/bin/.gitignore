@@ -1,8 +1,4 @@
 /BlackBoxTesting/
-/UserInterfaces/
 /WhiteBoxTesting/
-/viewTickets/
-/PurchaseBasket/
-/DashboardCode/
-/login/
-/emailServices/
+/TicketDownloadCode/
+/UserInterfaces/
