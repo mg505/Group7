@@ -35,6 +35,7 @@ public class DashboardUI {
         JButton aboutButton = new JButton("About");
         JButton basketButton = new JButton("Basket");
         JButton profileButton = new JButton("Profile");
+        JButton contactSupportButton = new JButton("Contact Support");
 
         // Add action listeners for buttons
         homeButton.addActionListener(e -> JOptionPane.showMessageDialog(frame, "Home functionality to be added..."));
@@ -42,6 +43,7 @@ public class DashboardUI {
         aboutButton.addActionListener(e -> JOptionPane.showMessageDialog(frame, "About functionality to be added..."));
         basketButton.addActionListener(e -> openPurchaseBasketUI());
         profileButton.addActionListener(e -> JOptionPane.showMessageDialog(frame, "Profile functionality to be added..."));
+        contactSupportButton.addActionListener(e -> openContactSupportUI());
 
         // Add buttons to the navigation panel
         buttonPanel.add(homeButton);
@@ -49,6 +51,7 @@ public class DashboardUI {
         buttonPanel.add(aboutButton);
         buttonPanel.add(basketButton);
         buttonPanel.add(profileButton);
+        buttonPanel.add(contactSupportButton);
 
         // Create the ticket display panel
         JPanel ticketPanel = new JPanel();
@@ -94,5 +97,11 @@ public class DashboardUI {
         frame.dispose();  // Dispose the current DashboardUI
         // Pass the logged-in user and the basket to the PurchaseBasketUI
         new PurchaseBasketUI(loggedInUser, basket);  // Correctly pass both User and Basket
+    }
+    
+    // Opens the contact support UI
+    public void openContactSupportUI() {
+        frame.dispose(); // Optional: Dispose of the dashboard if needed
+        new ContactSupportUI(); // Open the Contact Support UI
     }
 }
