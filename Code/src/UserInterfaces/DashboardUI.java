@@ -3,7 +3,6 @@ package UserInterfaces;
 import login.User;
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 import PurchaseBasket.Basket;
 
 public class DashboardUI {
@@ -27,11 +26,12 @@ public class DashboardUI {
         frame.setLayout(new BorderLayout());
 
         // Create a navigation button panel
-        JPanel buttonPanel = new JPanel(new GridLayout(1, 5));
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 6)); // Adjusted grid for the new Refund Tickets button
         buttonPanel.setBackground(Color.WHITE);
 
         JButton homeButton = new JButton("Home");
-        JButton viewTicketsButton = new JButton("View Tickets"); // Changed from "Buy Tickets" to "View Tickets"
+        JButton viewTicketsButton = new JButton("View Tickets");
+        JButton refundTicketsButton = new JButton("Refund Tickets"); // New Refund Tickets button
         JButton aboutButton = new JButton("About");
         JButton basketButton = new JButton("Basket");
         JButton profileButton = new JButton("Profile");
@@ -39,6 +39,7 @@ public class DashboardUI {
         // Add action listeners for buttons
         homeButton.addActionListener(e -> JOptionPane.showMessageDialog(frame, "Home functionality to be added..."));
         viewTicketsButton.addActionListener(e -> openViewTicketsUI());
+        refundTicketsButton.addActionListener(e -> openRefundTicketUI()); // Open RefundTicketUI
         aboutButton.addActionListener(e -> JOptionPane.showMessageDialog(frame, "About functionality to be added..."));
         basketButton.addActionListener(e -> openPurchaseBasketUI());
         profileButton.addActionListener(e -> JOptionPane.showMessageDialog(frame, "Profile functionality to be added..."));
@@ -46,6 +47,7 @@ public class DashboardUI {
         // Add buttons to the navigation panel
         buttonPanel.add(homeButton);
         buttonPanel.add(viewTicketsButton);
+        buttonPanel.add(refundTicketsButton); // Add Refund Tickets button
         buttonPanel.add(aboutButton);
         buttonPanel.add(basketButton);
         buttonPanel.add(profileButton);
@@ -81,7 +83,11 @@ public class DashboardUI {
         frame.setVisible(true);  // Make the frame visible
     }
 
-   
+    // Opens the RefundTicketUI
+    public void openRefundTicketUI() {
+        frame.dispose();  // Dispose the current DashboardUI
+        new RefundTicketUI(loggedInUser);  // Open RefundTicketUI
+    }
 
     // Opens the ticket browsing UI
     public void openViewTicketsUI() {
@@ -92,7 +98,6 @@ public class DashboardUI {
     // Opens the purchase basket UI
     public void openPurchaseBasketUI() {
         frame.dispose();  // Dispose the current DashboardUI
-        // Pass the logged-in user and the basket to the PurchaseBasketUI
         new PurchaseBasketUI(loggedInUser, basket);  // Correctly pass both User and Basket
     }
 }
