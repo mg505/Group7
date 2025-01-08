@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 /BlackBoxTesting/
+<<<<<<< HEAD
 =======
 /DashboardCode/
 /ProgramController/
@@ -7,7 +8,10 @@
 >>>>>>> refs/remotes/origin/9-add-ticket-times-to-calendar
 /UserInterfaces/
 <<<<<<< HEAD
+=======
+>>>>>>> refs/remotes/origin/10-allow-tickets-to-be-downloaded-to-phone
 /WhiteBoxTesting/
+<<<<<<< HEAD
 /viewTickets/
 /PurchaseBasket/
 /DashboardCode/
@@ -20,3 +24,8 @@
 /viewTickets/
 /Calendar/
 >>>>>>> refs/remotes/origin/9-add-ticket-times-to-calendar
+=======
+/TicketDownloadCode/
+/UserInterfaces/
+/RefundTicket/
+>>>>>>> refs/remotes/origin/10-allow-tickets-to-be-downloaded-to-phone
