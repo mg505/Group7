@@ -41,8 +41,7 @@ public class DashboardUI {
         viewTicketsButton.addActionListener(e -> openViewTicketsUI());
         aboutButton.addActionListener(e -> JOptionPane.showMessageDialog(frame, "About functionality to be added..."));
         basketButton.addActionListener(e -> openPurchaseBasketUI());
-        profileButton.addActionListener(e -> JOptionPane.showMessageDialog(frame, "Profile functionality to be added..."));
-
+        profileButton.addActionListener(e -> openUserProfileUI()); 
         // Add buttons to the navigation panel
         buttonPanel.add(homeButton);
         buttonPanel.add(viewTicketsButton);
@@ -94,5 +93,10 @@ public class DashboardUI {
         frame.dispose();  // Dispose the current DashboardUI
         // Pass the logged-in user and the basket to the PurchaseBasketUI
         new PurchaseBasketUI(loggedInUser, basket);  // Correctly pass both User and Basket
+    }
+    
+    public void openUserProfileUI() {
+        frame.dispose();  // Dispose the current DashboardUI
+        new UserProfileUI(loggedInUser);  // Pass loggedInUser to the UserProfileUI
     }
 }
