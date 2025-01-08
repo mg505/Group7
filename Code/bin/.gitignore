@@ -1,5 +1,12 @@
+<<<<<<< HEAD
 /BlackBoxTesting/
+=======
+/DashboardCode/
+/ProgramController/
+/PurchaseBasket/
+>>>>>>> refs/remotes/origin/9-add-ticket-times-to-calendar
 /UserInterfaces/
+<<<<<<< HEAD
 /WhiteBoxTesting/
 /viewTickets/
 /PurchaseBasket/
@@ -7,3 +14,9 @@
 /login/
 /emailServices/
 /RefundTicket/
+=======
+/emailServices/
+/login/
+/viewTickets/
+/Calendar/
+>>>>>>> refs/remotes/origin/9-add-ticket-times-to-calendar
