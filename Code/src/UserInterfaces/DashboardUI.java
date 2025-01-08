@@ -76,8 +76,15 @@ public class DashboardUI {
             JLabel ticketLabel = new JLabel("<html><b>Ticket:</b> " + ticket + "</html>");
             JButton downloadButton = new JButton("Download");
 
-            // Set a fixed size for the download button
-            downloadButton.setPreferredSize(new Dimension(40, 40)); // Fixed width and height
+            // Style the download button
+            downloadButton.setFont(new Font("Arial", Font.BOLD, 12)); // Set font style and size
+            downloadButton.setFocusPainted(false); // Remove focus border when clicked
+            downloadButton.setBackground(new Color(70, 130, 180)); // Light blue background
+            downloadButton.setForeground(Color.WHITE); // White text color
+            downloadButton.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 1)); // Thin border
+
+            // Adjust button size to match text height
+            downloadButton.setPreferredSize(new Dimension(100, 0)); // Width: 100px, Height: 25px
 
             // Add action listener to download button
             downloadButton.addActionListener(e -> 
