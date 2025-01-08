@@ -1,5 +1,6 @@
 package UserInterfaces;
 
+import login.LoginSystem;
 import login.User;
 import javax.swing.*;
 import java.awt.*;
@@ -16,10 +17,13 @@ public class PurchaseBasketUI {
     private JLabel totalCostLabel;
     private User currentUser;
     private Basket basket;
+    private LoginSystem loginSystem;
 
-    public PurchaseBasketUI(User currentUser, Basket basket) {
+    // Modify constructor to accept LoginSystem
+    public PurchaseBasketUI(User currentUser, Basket basket, LoginSystem loginSystem) {
         this.currentUser = currentUser;
         this.basket = basket;
+        this.loginSystem = loginSystem;
         initializeUI();
     }
 
@@ -151,6 +155,6 @@ public class PurchaseBasketUI {
 
     private void navigateToDashboard() {
         frame.dispose();
-        new DashboardUI(currentUser);
+        new DashboardUI(currentUser, loginSystem);
     }
 }

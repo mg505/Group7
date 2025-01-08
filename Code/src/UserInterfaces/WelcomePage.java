@@ -3,131 +3,86 @@ package UserInterfaces;
 import login.LoginSystem;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class WelcomePage {
 
-    private LoginSystem logInSystem;  // Instance of LoginSystem for use in UIs
-    private JFrame frame;  // Added frame reference
+    private LoginSystem logInSystem;
+    private JFrame frame;
 
-    public WelcomePage() {
-        this.logInSystem = new LoginSystem(); // Initialize the LoginSystem
+    public WelcomePage(LoginSystem logInSystem) {
+        this.logInSystem = logInSystem;
         createWelcomePageUI();
     }
 
-    // Create the frame for the Welcome Page
     private void createWelcomePageUI() {
-        frame = new JFrame("Train Ticket Service"); // Initialize the frame
+        frame = new JFrame("Train Ticket Service");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 400);  // Increased size for a bigger screen
-        frame.setLocationRelativeTo(null); // Center the frame
-        frame.getContentPane().setBackground(Color.WHITE); // Set white background
+        frame.setSize(600, 400);
+        frame.setLocationRelativeTo(null);
+        frame.getContentPane().setBackground(Color.WHITE);
 
-        // Create a panel to hold the components (using BorderLayout)
         JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());  // Use BorderLayout for more control
-        panel.setBackground(Color.WHITE); // Set the panel background to white
+        panel.setLayout(new BorderLayout());
+        panel.setBackground(Color.WHITE);
 
-        // Create a welcome label
         JLabel welcomeLabel = new JLabel("Welcome to the Train Ticket Service!");
-        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 24));  // Larger font size
-        welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center the label
-        panel.add(welcomeLabel, BorderLayout.NORTH); // Add to the top
+        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        panel.add(welcomeLabel, BorderLayout.NORTH);
 
-        // Create a description label
         JLabel descriptionLabel = new JLabel("Please choose an option to proceed:");
         descriptionLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        descriptionLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center the label
-        panel.add(descriptionLabel, BorderLayout.CENTER); // Add to the center
+        descriptionLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        panel.add(descriptionLabel, BorderLayout.CENTER);
 
-        // Create a panel for the buttons (to manage layout)
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));  // Center buttons horizontally
-        buttonPanel.setBackground(Color.WHITE); // Set the background to white
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.setBackground(Color.WHITE);
 
-        // Add vertical space before the buttons
-        buttonPanel.add(Box.createVerticalStrut(50));  // Adds vertical space before the buttons
+        buttonPanel.add(Box.createVerticalStrut(50));
 
-        // Create a button for Login (bigger size)
         JButton loginButton = new JButton("Login");
-        loginButton.setFont(new Font("Arial", Font.BOLD, 18));  // Bigger font for the button
-        loginButton.setPreferredSize(new Dimension(250, 50)); // Bigger button size
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                openLogInUI();  // Open Log In UI
-            }
-        });
+        loginButton.setFont(new Font("Arial", Font.BOLD, 18));
+        loginButton.setPreferredSize(new Dimension(250, 50));
+        loginButton.addActionListener(e -> openLogInUI());
         buttonPanel.add(loginButton);
 
-        // Create a button for Sign Up (bigger size)
         JButton signUpButton = new JButton("Sign Up");
-        signUpButton.setFont(new Font("Arial", Font.BOLD, 18));  // Bigger font for the button
-        signUpButton.setPreferredSize(new Dimension(250, 50)); // Bigger button size
-        signUpButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                openSignUpUI();  // Open Sign Up UI
-            }
-        });
+        signUpButton.setFont(new Font("Arial", Font.BOLD, 18));
+        signUpButton.setPreferredSize(new Dimension(250, 50));
+        signUpButton.addActionListener(e -> openSignUpUI());
         buttonPanel.add(signUpButton);
 
-        // Add the button panel to the center of the frame
         panel.add(buttonPanel, BorderLayout.CENTER);
 
-        // Create a panel for the Exit button (to position it at the bottom-left)
         JPanel exitPanel = new JPanel();
-        exitPanel.setLayout(new FlowLayout(FlowLayout.LEFT));  // Align the exit button to the left
-        exitPanel.setBackground(Color.WHITE); // Ensure the background is white
+        exitPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        exitPanel.setBackground(Color.WHITE);
 
-        // Create a button to exit the application
         JButton exitButton = new JButton("Exit");
-        exitButton.setFont(new Font("Arial", Font.BOLD, 16));  // Font for the exit button
-        exitButton.setPreferredSize(new Dimension(100, 40)); // Button size
-        exitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0); // Exit the application
-            }
-        });
+        exitButton.setFont(new Font("Arial", Font.BOLD, 16));
+        exitButton.setPreferredSize(new Dimension(100, 40));
+        exitButton.addActionListener(e -> System.exit(0));
         exitPanel.add(exitButton);
 
-        // Add the exit panel to the bottom of the frame
         panel.add(exitPanel, BorderLayout.SOUTH);
 
-        // Add the panel to the frame
         frame.add(panel);
-
-        // Make the frame visible
         frame.setVisible(true);
     }
 
-    // Open the Log In UI
-    private void openLogInUI() {
-        // Dispose of the current Welcome Page frame
-        if (frame != null) {
-            frame.dispose();  // Close the WelcomePage frame
-        }
-
-        // Open the LogInUI
+    public void openLogInUI() {
+        frame.dispose();
         new LogInUI(logInSystem);
     }
 
-    // Open the Sign Up UI
     private void openSignUpUI() {
-        // Dispose of the current Welcome Page frame
-        if (frame != null) {
-            frame.dispose();  // Close the WelcomePage frame
-        }
-
-        // Open the SignUpUI
+        frame.dispose();
         new SignUpUI(logInSystem);
     }
 
-    // Main method to launch the WelcomePage UI
     public static void main(String[] args) {
-        // Create an instance of WelcomePage to start the UI
-        new WelcomePage();
+        LoginSystem loginSystem = new LoginSystem();
+        new WelcomePage(loginSystem);
     }
 }

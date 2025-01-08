@@ -1,6 +1,7 @@
 package UserInterfaces;
 
 import viewTickets.viewTickets;
+import login.LoginSystem;
 import login.User;
 import PurchaseBasket.Basket;
 
@@ -16,10 +17,13 @@ public class ViewTicketsUI {
     private Map<Integer, String[]> tickets;
     private Basket basket;
     private User user;
+	private User loggedInUser;
+	private LoginSystem loginSystem;
 
-    public ViewTicketsUI(Basket basket, User loggedInUser) {
+    public ViewTicketsUI(Basket basket, User loggedInUser, LoginSystem loginSystem) {
+    	this.loggedInUser = loggedInUser;
+        this.loginSystem = loginSystem;
         this.basket = basket;
-        this.user = loggedInUser;
         viewTickets ticketManager = new viewTickets(loggedInUser);
         this.tickets = ticketManager.getTickets();
 
@@ -75,7 +79,7 @@ public class ViewTicketsUI {
         frame.dispose();  // Close the current ViewTicketsUI frame
 
         // Create a new instance of DashboardUI, passing the logged-in user
-        new DashboardUI(this.user);  // Assuming loggedInUser is the user you are passing to the dashboard
+        new DashboardUI(loggedInUser, loginSystem);  // Assuming loggedInUser is the user you are passing to the dashboard
     }
 
     public void addSelectedTicketToBasket(viewTickets ticketManager) {

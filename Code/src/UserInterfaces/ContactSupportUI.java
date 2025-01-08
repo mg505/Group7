@@ -1,15 +1,23 @@
 package UserInterfaces;
 
+import emailServices.EmailService;
+import login.LoginSystem;
+import login.User;
+
+import javax.mail.MessagingException;
 import javax.swing.*;
 import java.awt.*;
-import java.io.FileWriter;
-import java.io.IOException;
 
 public class ContactSupportUI {
 
-    private JFrame frame;
+	private JFrame frame;
+    private User loggedInUser;
+    private LoginSystem loginSystem;
 
-    public ContactSupportUI() {
+    // Modify constructor to accept LoginSystem
+    public ContactSupportUI(User user, LoginSystem loginSystem) {
+        this.loggedInUser = user;
+        this.loginSystem = loginSystem;
         createSupportUI();
     }
 
@@ -34,9 +42,10 @@ public class ContactSupportUI {
         submitButton.addActionListener(e -> {
             String issue = issueTextArea.getText().trim();
             if (!issue.isEmpty()) {
-                logIssue(issue);
+                logAndEmailIssue(issue);
                 JOptionPane.showMessageDialog(frame, "Thank you! Your issue has been submitted.");
-                frame.dispose(); // Close the support frame
+                frame.dispose();
+                new DashboardUI(loggedInUser, loginSystem); // Navigate back to the user's dashboard
             } else {
                 JOptionPane.showMessageDialog(frame, "Please describe your issue before submitting.");
             }
@@ -46,11 +55,26 @@ public class ContactSupportUI {
         frame.setVisible(true);  // Make the frame visible
     }
 
-    private void logIssue(String issue) {
-        // Example: Log the issue to a file (you can replace this with a database or email logic)
-        try (FileWriter writer = new FileWriter("support_issues.txt", true)) {
-            writer.write(issue + System.lineSeparator());
-        } catch (IOException e) {
+    private void logAndEmailIssue(String issue) {
+        // Log the issue to a file
+        try (java.io.FileWriter writer = new java.io.FileWriter("support_issues.txt", true)) {
+            writer.write("User: " + loggedInUser.getUsername() + "\n");
+            writer.write("Issue: " + issue + "\n");
+            writer.write("---------------------------------\n");
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
+
+        // Send the issue via email
+        EmailService emailService = new EmailService();
+        String recipientEmail = "mg505@student.le.ac.uk"; // Replace with your support email
+        String subject = "Support Request from User: " + loggedInUser.getUsername();
+        String emailBody = "User: " + loggedInUser.getUsername() + "\n\n" + "Issue:\n" + issue;
+
+        try {
+            emailService.sendEmail(recipientEmail, subject, emailBody);
+        } catch (MessagingException e) {
+            JOptionPane.showMessageDialog(frame, "Failed to send email to support. Please try again later.");
             e.printStackTrace();
         }
     }

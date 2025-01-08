@@ -1,41 +1,5 @@
-<<<<<<< HEAD
 /BlackBoxTesting/
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-/DashboardCode/
-/ProgramController/
-/PurchaseBasket/
->>>>>>> refs/remotes/origin/9-add-ticket-times-to-calendar
 /UserInterfaces/
-<<<<<<< HEAD
-=======
->>>>>>> refs/remotes/origin/10-allow-tickets-to-be-downloaded-to-phone
-=======
->>>>>>> refs/remotes/origin/11-user-profile
 /WhiteBoxTesting/
-<<<<<<< HEAD
-<<<<<<< HEAD
-/viewTickets/
-/PurchaseBasket/
-=======
->>>>>>> refs/remotes/origin/11-user-profile
+/login/
 /DashboardCode/
-/login/
-<<<<<<< HEAD
-/emailServices/
-/RefundTicket/
-=======
-/emailServices/
-/login/
-/viewTickets/
-/Calendar/
->>>>>>> refs/remotes/origin/9-add-ticket-times-to-calendar
-=======
-/TicketDownloadCode/
-/UserInterfaces/
-/RefundTicket/
->>>>>>> refs/remotes/origin/10-allow-tickets-to-be-downloaded-to-phone
-=======
-/UserInterfaces/
->>>>>>> refs/remotes/origin/11-user-profile

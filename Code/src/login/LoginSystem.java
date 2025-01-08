@@ -2,43 +2,64 @@ package login;
 
 import java.util.ArrayList;
 
-public class LoginSystem {
 
+public class LoginSystem {
     private ArrayList<User> users;
+    private static User currentUser; // Store the current logged-in user
 
     public LoginSystem() {
         users = new ArrayList<>();
-        // Predefine a test user for login
-        users.add(new User("admin", "password"));  // Predefined user (username: admin, password: password)
+        users.add(new User("admin", "password")); // Sample user
     }
 
-    // Register a new user and return the User object
-    public User registerUser(String username, String password) {
-        // Check if the username already exists
+    // Check if username is already taken
+    public boolean isUsernameTaken(String username) {
         for (User user : users) {
-            if (user.getUsername().equals(username)) {
-                throw new IllegalArgumentException("Username already exists!");
+            if (user.getUsername().equalsIgnoreCase(username)) {
+                return true;
             }
         }
-        // Create and add the new user
+        return false;
+    }
+
+    // Register a new user
+    public User registerUser(String username, String password) {
+        if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
+            throw new IllegalArgumentException("Username and password cannot be empty.");
+        }
+        if (isUsernameTaken(username)) {
+            throw new IllegalArgumentException("Username already exists.");
+        }
         User newUser = new User(username, password);
         users.add(newUser);
         return newUser;
     }
 
-    // Validate login credentials and return the User object if valid
+    // Validate login credentials
     public User validateLogin(String username, String password) {
-        // Iterate through the users list to find a match
         for (User user : users) {
-            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
-                return user;  // Return the User object on successful login
+            if (user.getUsername().equalsIgnoreCase(username) && user.getPassword().equals(password)) {
+                currentUser = user; // Set the logged-in user
+                return user;
             }
         }
-        return null;  // Return null if login fails
+        return null; // Invalid login
     }
 
-    // Optional: Getter for users (if needed for other operations)
-    public ArrayList<User> getUsers() {
+    // Logout the current user
+    public void logout() {
+        currentUser = null; // Clear the session
+    }
+
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+
+    public ArrayList<User> getAllUsers() {
         return users;
+    }
+
+    public void removeUser(User user) {
+        users.remove(user);
     }
 }

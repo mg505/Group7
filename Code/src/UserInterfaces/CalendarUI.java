@@ -5,7 +5,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
-import Calendar.Calendar; 
+import Calendar.Calendar;
+import login.LoginSystem;
+import login.User;
+
 import javax.swing.table.DefaultTableModel;
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -14,18 +17,22 @@ import java.util.Map;
 
 public class CalendarUI {
 
-
     private JLabel monthLabel;
     private JTable calendarTable;
     private JFrame frame;
     private Calendar calendar;
     private YearMonth currentMonth;
     private YearMonth lastMonthWithTickets;
+    private LoginSystem loginSystem;
+	private User user;
 
-    public CalendarUI(Calendar calendar) {
+    // Modify constructor to accept LoginSystem
+    public CalendarUI(Calendar calendar, User user,LoginSystem loginSystem) {
         this.calendar = calendar;
+        this.user = user;
         this.currentMonth = YearMonth.now();
         this.lastMonthWithTickets = Calendar.getLastMonthWithTicket();
+        this.loginSystem = loginSystem;
         initializeUI();
     }
 
@@ -139,7 +146,7 @@ public class CalendarUI {
         // Navigate back to the Dashboard UI
         frame.dispose();  // Close the current calendar frame
         
-        new DashboardUI(null);  // Create and display a new DashboardUI instance
+        new DashboardUI(user, loginSystem);  // Create and display a new DashboardUI instance
     }
 
 }

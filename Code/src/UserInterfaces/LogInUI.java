@@ -2,25 +2,22 @@ package UserInterfaces;
 
 import login.LoginSystem;
 import login.User;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class LogInUI {
 
-    private LoginSystem logInSystem;  // Instance of LoginSystem
+    private LoginSystem logInSystem;
     private JFrame frame;
     private JTextField usernameField;
     private JPasswordField passwordField;
 
-    // Constructor to accept LoginSystem instance
-    public LogInUI(LoginSystem logInSystem) {
-        this.logInSystem = logInSystem;  // Initialize LoginSystem
+    public LogInUI(LoginSystem logInSystem) { // Corrected Constructor
+        this.logInSystem = logInSystem;
         initializeUI();
     }
 
-    // Initialize the Login UI components
     private void initializeUI() {
         frame = new JFrame("Login");
         frame.setSize(400, 300);
@@ -34,20 +31,10 @@ public class LogInUI {
         passwordField = new JPasswordField();
 
         JButton loginButton = new JButton("Login");
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleLogin();
-            }
-        });
+        loginButton.addActionListener(e -> handleLogin());
 
         JButton backButton = new JButton("Back");
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                openWelcomePage();  // Navigate back to the WelcomePage
-            }
-        });
+        backButton.addActionListener(e -> openWelcomePage());
 
         frame.add(usernameLabel);
         frame.add(usernameField);
@@ -59,29 +46,31 @@ public class LogInUI {
         frame.setVisible(true);
     }
 
-    // Handle the login action
     private void handleLogin() {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
 
+        if (username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Please enter both username and password.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         User loggedInUser = logInSystem.validateLogin(username, password);
         if (loggedInUser != null) {
             JOptionPane.showMessageDialog(frame, "Login successful!");
-            openDashboardUI(loggedInUser);  // Pass the logged-in user
+            openDashboardUI(loggedInUser);
         } else {
-            JOptionPane.showMessageDialog(frame, "Invalid credentials, please try again.");
+            JOptionPane.showMessageDialog(frame, "Invalid username or password.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    // Open the WelcomePage UI
     private void openWelcomePage() {
-        frame.dispose();  // Close the Login UI window
-        new WelcomePage();  // Open the WelcomePage UI
+        frame.dispose();
+        new WelcomePage(logInSystem);
     }
 
-    // Open the Dashboard UI
     private void openDashboardUI(User loggedInUser) {
-        frame.dispose();  // Close the Login UI window
-        new DashboardUI(loggedInUser);  // Pass the logged-in user to DashboardUI
+        frame.dispose();
+        new DashboardUI(loggedInUser, logInSystem);
     }
 }
