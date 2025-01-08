@@ -2,7 +2,7 @@ package DashboardCode;
 
 import java.util.Scanner;
 
-public class ContactSupport {
+public class contactSupport {
 
     public void handleSupport() {
         Scanner scanner = new Scanner(System.in);
