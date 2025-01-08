@@ -46,9 +46,13 @@ public class DashboardUI {
         refundTicketsButton.addActionListener(e -> openRefundTicketUI()); // Open RefundTicketUI
         aboutButton.addActionListener(e -> JOptionPane.showMessageDialog(frame, "About functionality to be added..."));
         basketButton.addActionListener(e -> openPurchaseBasketUI());
+
         profileButton.addActionListener(e -> JOptionPane.showMessageDialog(frame, "Profile functionality to be added..."));
         contactSupportButton.addActionListener(e -> openContactSupportUI());
 
+
+        profileButton.addActionListener(e -> openUserProfileUI()); 
+ 
         // Add buttons to the navigation panel
         buttonPanel.add(homeButton);
         buttonPanel.add(viewTicketsButton);
@@ -146,9 +150,15 @@ public class DashboardUI {
         new PurchaseBasketUI(loggedInUser, basket);  // Correctly pass both User and Basket
     }
     
+
     // Opens the contact support UI
     public void openContactSupportUI() {
         frame.dispose(); // Optional: Dispose of the dashboard if needed
         new ContactSupportUI(); // Open the Contact Support UI
+
+    public void openUserProfileUI() {
+        frame.dispose();  // Dispose the current DashboardUI
+        new UserProfileUI(loggedInUser);  // Pass loggedInUser to the UserProfileUI
+
     }
 }

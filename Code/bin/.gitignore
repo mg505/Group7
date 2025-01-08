@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 /BlackBoxTesting/
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 /DashboardCode/
 /ProgramController/
@@ -10,12 +11,18 @@
 <<<<<<< HEAD
 =======
 >>>>>>> refs/remotes/origin/10-allow-tickets-to-be-downloaded-to-phone
+=======
+>>>>>>> refs/remotes/origin/11-user-profile
 /WhiteBoxTesting/
+<<<<<<< HEAD
 <<<<<<< HEAD
 /viewTickets/
 /PurchaseBasket/
+=======
+>>>>>>> refs/remotes/origin/11-user-profile
 /DashboardCode/
 /login/
+<<<<<<< HEAD
 /emailServices/
 /RefundTicket/
 =======
@@ -29,3 +36,6 @@
 /UserInterfaces/
 /RefundTicket/
 >>>>>>> refs/remotes/origin/10-allow-tickets-to-be-downloaded-to-phone
+=======
+/UserInterfaces/
+>>>>>>> refs/remotes/origin/11-user-profile
