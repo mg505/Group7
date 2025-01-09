@@ -1,85 +1,85 @@
 package UserInterfaces;
 
+import TicketDownloadCode.TicketDownloader; // Import the TicketDownloader class
 import login.LoginSystem;
 import login.User;
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 import PurchaseBasket.Basket;
-import TicketDownloadCode.TicketDownloader;
+import Calendar.Calendar;
 
 public class DashboardUI {
 
-    private User loggedInUser;  // Store the logged-in user
+    private User loggedInUser;
     private JFrame frame;
     private Basket basket;
     private LoginSystem loginSystem;
 
-    // Constructor
+    // Constructor to initialise the Dashboard UI
     public DashboardUI(User loggedInUser, LoginSystem loginSystem) {
         this.loggedInUser = loggedInUser;
-        this.basket = loggedInUser.getBasket();  
-        this.loginSystem = loginSystem; // Initialize LoginSystem
+        this.basket = loggedInUser.getBasket();
+        this.loginSystem = loginSystem;
         createDashboardUI();
     }
 
+    // Method to create the main Dashboard UI
     public void createDashboardUI() {
-        // Create and configure the main frame
+        // Create and configure the main dashboard frame
         frame = new JFrame("Ticket Booking Dashboard");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);  // Adjusted size for better UI
+        frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
         frame.setLayout(new BorderLayout());
 
-        // Create a navigation button panel
-        JPanel buttonPanel = new JPanel(new GridLayout(1, 7)); // Adjusted grid for all buttons
+        // Create a panel for navigation buttons
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 6));
         buttonPanel.setBackground(Color.WHITE);
 
-        // Navigation buttons
-        JButton homeButton = new JButton("Home");
+        // Navigation buttons for dashboard
         JButton viewTicketsButton = new JButton("View Tickets");
         JButton refundTicketsButton = new JButton("Refund Tickets");
-        JButton aboutButton = new JButton("About");
         JButton basketButton = new JButton("Basket");
         JButton profileButton = new JButton("Profile");
         JButton contactSupportButton = new JButton("Contact Support");
+        JButton calendarButton = new JButton("View Calendar");
 
-        // Add action listeners for buttons
-        homeButton.addActionListener(e -> JOptionPane.showMessageDialog(frame, "Home functionality to be added..."));
+        // Action listeners to buttons
         viewTicketsButton.addActionListener(e -> openViewTicketsUI());
         refundTicketsButton.addActionListener(e -> openRefundTicketUI());
-        aboutButton.addActionListener(e -> JOptionPane.showMessageDialog(frame, "About functionality to be added..."));
         basketButton.addActionListener(e -> openPurchaseBasketUI());
         profileButton.addActionListener(e -> openUserProfileUI());
         contactSupportButton.addActionListener(e -> openContactSupportUI());
+        calendarButton.addActionListener(e -> openCalendarUI());
 
-        // Add buttons to the navigation panel
- 
+        // Add buttons to navigation panel
         buttonPanel.add(viewTicketsButton);
         buttonPanel.add(refundTicketsButton);
         buttonPanel.add(basketButton);
         buttonPanel.add(profileButton);
         buttonPanel.add(contactSupportButton);
+        buttonPanel.add(calendarButton);
 
-        // Create the ticket display panel
+        // Create the panel for displaying tickets
         JPanel ticketPanel = new JPanel();
         ticketPanel.setLayout(new BoxLayout(ticketPanel, BoxLayout.Y_AXIS));
         ticketPanel.setBackground(Color.WHITE);
 
+        // Current Tickets Section
         JLabel currentTicketsLabel = new JLabel("Current Tickets:");
         currentTicketsLabel.setFont(new Font("Arial", Font.BOLD, 16));
         ticketPanel.add(currentTicketsLabel);
 
-        // Add current tickets to the panel with download buttons
+        // Iterate over the current tickets and display them with a download button
         for (String ticket : loggedInUser.getCurrentTickets()) {
-            JPanel ticketItemPanel = new JPanel();
-            ticketItemPanel.setLayout(new BorderLayout());
+            JPanel ticketItemPanel = new JPanel(new BorderLayout());
             ticketItemPanel.setBackground(Color.WHITE);
 
+            // Display the ticket information as a label
             JLabel ticketLabel = new JLabel("<html><b>Ticket:</b> " + ticket + "</html>");
-            JButton downloadButton = new JButton("Download");
 
-            // Style the download button
+            // Download button with functionality
+            JButton downloadButton = new JButton("Download");
             downloadButton.setFont(new Font("Arial", Font.BOLD, 12));
             downloadButton.setFocusPainted(false);
             downloadButton.setBackground(new Color(70, 130, 180));
@@ -87,67 +87,67 @@ public class DashboardUI {
             downloadButton.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 1));
             downloadButton.setPreferredSize(new Dimension(100, 0));
 
-            // Add action listener to download button
+            // Add action listener to download the ticket when the button is clicked
             downloadButton.addActionListener(e -> {
-                String ticketId = "123";  // Replace with actual ticket ID
-                String route = "Route A";  // Replace with actual route
-                String time = "10:00 AM";  // Replace with actual time
-                String price = "50.00";    // Replace with actual price
-                TicketDownloader.downloadTicket(frame, ticketId, route, time, price);
+                // Directly pass the ticket string without splitting
+                TicketDownloader.downloadTicket(frame, ticket);
             });
+
+           
 
             ticketItemPanel.add(ticketLabel, BorderLayout.CENTER);
             ticketItemPanel.add(downloadButton, BorderLayout.EAST);
             ticketItemPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
             ticketPanel.add(ticketItemPanel);
         }
 
+        // Expired Tickets Section
         JLabel expiredTicketsLabel = new JLabel("Expired Tickets:");
         expiredTicketsLabel.setFont(new Font("Arial", Font.BOLD, 16));
         ticketPanel.add(expiredTicketsLabel);
 
-        // Add expired tickets to the panel (no download button for expired tickets)
+        // Add expired tickets to its section
         for (String ticket : loggedInUser.getExpiredTickets()) {
             JLabel ticketLabel = new JLabel("- " + ticket);
             ticketPanel.add(ticketLabel);
         }
 
-        // Add panels to the frame
+        // Add components to the frame
         frame.add(buttonPanel, BorderLayout.NORTH);
         JScrollPane scrollPane = new JScrollPane(ticketPanel);
         frame.add(scrollPane, BorderLayout.CENTER);
 
-        frame.setVisible(true);  // Make the frame visible
+        frame.setVisible(true);
     }
 
-    // Opens the ticket browsing UI
+    // Navigation methods to the other  UIs
     public void openViewTicketsUI() {
         frame.dispose();
-        new ViewTicketsUI(basket, loggedInUser, loginSystem); // Pass LoginSystem to the next UI
+        new ViewTicketsUI(basket, loggedInUser, loginSystem);
     }
 
-    // Opens the RefundTicketUI
     public void openRefundTicketUI() {
         frame.dispose();
-        new RefundTicketUI(loggedInUser, loginSystem); // Pass LoginSystem to the next UI
+        new RefundTicketUI(loggedInUser, loginSystem);
     }
 
-    // Opens the purchase basket UI
     public void openPurchaseBasketUI() {
         frame.dispose();
-        new PurchaseBasketUI(loggedInUser, basket, loginSystem); // Pass LoginSystem to the next UI
+        new PurchaseBasketUI(loggedInUser, basket, loginSystem);
     }
 
-    // Opens the contact support UI
     public void openContactSupportUI() {
         frame.dispose();
-        new ContactSupportUI(loggedInUser, loginSystem); // Pass LoginSystem to the next UI
+        new ContactSupportUI(loggedInUser, loginSystem);
     }
 
-    // Opens the user profile UI
     public void openUserProfileUI() {
         frame.dispose();
-        new UserProfileUI(loggedInUser, loginSystem); // Pass LoginSystem to the next UI
+        new UserProfileUI(loggedInUser, loginSystem);
+    }
+
+    public void openCalendarUI() {
+        frame.dispose();
+        new CalendarUI(new Calendar(), loggedInUser, loginSystem);
     }
 }

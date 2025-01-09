@@ -5,26 +5,26 @@ import java.util.Map;
 
 public class Basket {
 
-    private HashMap<Integer, String[]> basketItems;  // Store ticket ID and its details
-    private double totalCost;
+    private HashMap<Integer, String[]> basketItems;  
+    private double totalCost; 
 
     public Basket() {
         basketItems = new HashMap<>();
         totalCost = 0.0;
     }
 
-    // Add ticket to the basket with details
+    // Add ticket to the basket with its details
     public void addTicket(int ticketId, String[] ticketDetails, double price) {
-        basketItems.put(ticketId, ticketDetails);  // Add ticket details to the basket
-        totalCost += price;  // Add price to the total cost
+        basketItems.put(ticketId, ticketDetails);  
+        totalCost += price;  
         System.out.println("Ticket ID " + ticketId + " added to basket.");
     }
 
-    // Checkout the basket and return the purchased tickets
+    // Checkout and clear the basket
     public HashMap<Integer, String[]> checkoutBasket() {
-        HashMap<Integer, String[]> purchasedTickets = new HashMap<>(basketItems);  // Copy current tickets
-        clearBasket();  // Clear the basket after checkout
-        return purchasedTickets;  // Return the purchased tickets
+        HashMap<Integer, String[]> purchasedTickets = new HashMap<>(basketItems);  
+        clearBasket(); 
+        return purchasedTickets;  
     }
 
     // Display all items in the basket
@@ -40,12 +40,12 @@ public class Basket {
         }
     }
 
-    // Calculate total cost of items in the basket
+    // Get the total cost of tickets in the basket
     public double calculateTotalCost() {
-        return totalCost;
+        return totalCost;  
     }
 
-    // Generate email body with ticket details
+    // Generate email body for the ticket details
     public String generateEmailBody(double totalCost) {
         StringBuilder emailBody = new StringBuilder();
         emailBody.append("Thank you for your purchase! Here are your ticket details:\n\n");
@@ -59,18 +59,20 @@ public class Basket {
         }
 
         emailBody.append("\nTotal Cost: £").append(totalCost);
-        return emailBody.toString();
+     // Return email body
+        return emailBody.toString();  
     }
 
-    // Clear the basket after checkout
+    // Clear the basket
     public void clearBasket() {
-        basketItems.clear();
-        totalCost = 0.0;
+        basketItems.clear(); 
+        // Reset total cost
+        totalCost = 0.0;  
         System.out.println("Basket cleared.");
     }
 
     // Get all tickets in the basket
     public Map<Integer, String[]> getTickets() {
-        return basketItems;
+        return basketItems; 
     }
 }

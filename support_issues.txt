@@ -2,3 +2,12 @@ Blah blah blah issues
 User: admin
 Issue: Testing
 ---------------------------------
+User: testuser
+Issue: 
+---------------------------------
+User: testuser
+Issue: This is a test issue.
+---------------------------------
+User: testuser
+Issue: This is a test issue for logging.
+---------------------------------

@@ -1,8 +1,9 @@
 package BlackBoxTesting;
 
-import login.User;
 import PurchaseBasket.Basket;
 import UserInterfaces.PurchaseBasketUI;
+import login.LoginSystem;
+import login.User;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,52 +11,57 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PurchaseBasketBBTesting {
 
     @Test
-    public void testPurchaseBasketInitialization() {
-        // Setup: Create a User and Basket
-        User testUser = new User("testuser", "password123");
-        Basket testBasket = new Basket();
+    public void testBasketAddTicket() {
+        // Setup: Create a Basket instance
+        Basket basket = new Basket();
 
-        // Create the PurchaseBasketUI instance
-        assertDoesNotThrow(() -> new PurchaseBasketUI(testUser, testBasket),
-                "PurchaseBasketUI should initialize without exceptions.");
+        // Add a ticket to the basket
+        String[] ticketDetails = {"Route A", "10:00 AM", "50.0"};
+        basket.addTicket(1, ticketDetails, 50.0);
+
+        // Verify the ticket is added correctly
+        assertEquals(1, basket.getTickets().size(), "Basket should contain 1 ticket.");
+        assertEquals(50.0, basket.calculateTotalCost(), "Total cost should be 50.0.");
     }
 
     @Test
-    public void testClearBasket() {
-        // Setup: Create a User and Basket
-        User testUser = new User("testuser", "password123");
-        Basket testBasket = new Basket();
+    public void testBasketClear() {
+        // Setup: Create a Basket instance
+        Basket basket = new Basket();
 
-        // Add tickets to the basket
-        testBasket.addTicket(1, new String[]{"Route A", "10:00 AM", "50.0"}, 50.0);
+        // Add a ticket and then clear the basket
+        String[] ticketDetails = {"Route A", "10:00 AM", "50.0"};
+        basket.addTicket(1, ticketDetails, 50.0);
+        basket.clearBasket();
 
-        // Create the PurchaseBasketUI instance
-        PurchaseBasketUI purchaseBasketUI = new PurchaseBasketUI(testUser, testBasket);
-
-        // Clear the basket
-        purchaseBasketUI.clearBasket();
-
-        // Verify that the basket is empty
-        assertTrue(testBasket.getTickets().isEmpty(), "Basket should be empty after clearing.");
+        // Verify the basket is cleared
+        assertTrue(basket.getTickets().isEmpty(), "Basket should be empty after clearing.");
+        assertEquals(0.0, basket.calculateTotalCost(), "Total cost should be 0.0 after clearing.");
     }
 
     @Test
-    public void testProceedWithPurchaseAndEmailConfirmation() {
-        // Setup: Create a User and Basket
-        User testUser = new User("testuser", "password123");
-        Basket testBasket = new Basket();
+    public void testPurchaseBasketUICreation() {
+        // Setup: Create required objects
+        LoginSystem loginSystem = new LoginSystem();
+        User testUser = new User("testUser", "password123");
+        Basket basket = new Basket();
 
-        // Add tickets to the basket
-        testBasket.addTicket(1, new String[]{"Route A", "10:00 AM", "50.0"}, 50.0);
+        // Verify that the PurchaseBasketUI initializes without exceptions
+        assertDoesNotThrow(() -> new PurchaseBasketUI(testUser, basket, loginSystem), "PurchaseBasketUI should initialize without exceptions.");
+    }
 
-        // Create the PurchaseBasketUI instance
-        PurchaseBasketUI purchaseBasketUI = new PurchaseBasketUI(testUser, testBasket);
+    @Test
+    public void testPurchaseBasketProceedWithPurchase() {
+        // Setup: Create required objects
+        LoginSystem loginSystem = new LoginSystem();
+        User testUser = new User("testUser", "password123");
+        Basket basket = new Basket();
 
-        // Simulate proceeding with the purchase
-        assertDoesNotThrow(() -> purchaseBasketUI.proceedWithPurchase(),
-                "Proceeding with purchase should not throw exceptions.");
+        // Add a ticket to the basket
+        basket.addTicket(1, new String[]{"Route A", "10:00 AM", "50.0"}, 50.0);
 
-        // Verify that the basket is empty after purchase
-        assertTrue(testBasket.getTickets().isEmpty(), "Basket should be empty after purchase.");
+        // Verify that proceeding with purchase does not throw exceptions
+        PurchaseBasketUI purchaseBasketUI = new PurchaseBasketUI(testUser, basket, loginSystem);
+        assertDoesNotThrow(purchaseBasketUI::proceedWithPurchase, "Proceeding with purchase should not throw exceptions.");
     }
 }

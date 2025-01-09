@@ -2,14 +2,16 @@ package login;
 
 import java.util.ArrayList;
 
-
 public class LoginSystem {
-    private ArrayList<User> users;
-    private static User currentUser; // Store the current logged-in user
+	// List of all users
+    private ArrayList<User> users; 
+ // Current logged-in user
+    private static User currentUser; 
 
     public LoginSystem() {
         users = new ArrayList<>();
-        users.add(new User("admin", "password")); // Sample user
+        //admin user
+        users.add(new User("admin", "password")); 
     }
 
     // Check if username is already taken
@@ -19,7 +21,7 @@ public class LoginSystem {
                 return true;
             }
         }
-        return false;
+        return false; 
     }
 
     // Register a new user
@@ -31,7 +33,7 @@ public class LoginSystem {
             throw new IllegalArgumentException("Username already exists.");
         }
         User newUser = new User(username, password);
-        users.add(newUser);
+        users.add(newUser); 
         return newUser;
     }
 
@@ -39,27 +41,30 @@ public class LoginSystem {
     public User validateLogin(String username, String password) {
         for (User user : users) {
             if (user.getUsername().equalsIgnoreCase(username) && user.getPassword().equals(password)) {
-                currentUser = user; // Set the logged-in user
+                currentUser = user; // Set logged-in user
                 return user;
             }
         }
-        return null; // Invalid login
+        return null; 
     }
 
-    // Logout the current user
+    // Logout current user
     public void logout() {
-        currentUser = null; // Clear the session
+        currentUser = null;
     }
-
+    
+    // Return current user
     public static User getCurrentUser() {
-        return currentUser;
+        return currentUser; 
     }
-
+    
+    // Return all users
     public ArrayList<User> getAllUsers() {
-        return users;
+        return users; 
     }
-
+    
+    // Remove user from list
     public void removeUser(User user) {
-        users.remove(user);
+        users.remove(user); 
     }
 }

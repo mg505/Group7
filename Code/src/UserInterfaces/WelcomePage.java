@@ -14,7 +14,7 @@ public class WelcomePage {
         createWelcomePageUI();
     }
 
-    private void createWelcomePageUI() {
+    public void createWelcomePageUI() {
         frame = new JFrame("Train Ticket Service");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);
@@ -76,7 +76,7 @@ public class WelcomePage {
         new LogInUI(logInSystem);
     }
 
-    private void openSignUpUI() {
+    public void openSignUpUI() {
         frame.dispose();
         new SignUpUI(logInSystem);
     }

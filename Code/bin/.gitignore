@@ -1,5 +1,10 @@
 /BlackBoxTesting/
 /UserInterfaces/
 /WhiteBoxTesting/
+/viewTickets/
+/Calendar/
+/emailServices/
 /login/
-/DashboardCode/
+/PurchaseBasket/
+/RefundTicket/
+/TicketDownloadCode/

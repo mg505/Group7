@@ -16,27 +16,29 @@ public class ViewTicketsUI {
     private JComboBox<String> ticketComboBox;
     private Map<Integer, String[]> tickets;
     private Basket basket;
-    private User user;
-	private User loggedInUser;
-	private LoginSystem loginSystem;
+    private User loggedInUser;
+    private LoginSystem loginSystem;
 
+    // Constructor 
     public ViewTicketsUI(Basket basket, User loggedInUser, LoginSystem loginSystem) {
-    	this.loggedInUser = loggedInUser;
+        this.loggedInUser = loggedInUser;
         this.loginSystem = loginSystem;
         this.basket = basket;
         viewTickets ticketManager = new viewTickets(loggedInUser);
         this.tickets = ticketManager.getTickets();
 
-        initializeUI(ticketManager);
+        initialiseUI(ticketManager);
     }
 
-    private void initializeUI(viewTickets ticketManager) {
+    // Initialises the View Tickets UI 
+    private void initialiseUI(viewTickets ticketManager) {
         frame = new JFrame("View Tickets");
         frame.setSize(600, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setLayout(new BorderLayout());
 
+        // Panel for displaying the list of available tickets
         JPanel displayPanel = new JPanel();
         displayPanel.setLayout(new BorderLayout());
         displayPanel.setBorder(BorderFactory.createTitledBorder("Available Tickets"));
@@ -50,6 +52,7 @@ public class ViewTicketsUI {
 
         frame.add(displayPanel, BorderLayout.CENTER);
 
+        // Panel for selecting tickets to add to the basket
         JPanel selectionPanel = new JPanel();
         selectionPanel.setLayout(new FlowLayout());
 
@@ -75,25 +78,25 @@ public class ViewTicketsUI {
         frame.setVisible(true);
     }
 
+    // Navigates to the dashboard UI
     public void navigateToDashboard() {
-        frame.dispose();  // Close the current ViewTicketsUI frame
-
-        // Create a new instance of DashboardUI, passing the logged-in user
-        new DashboardUI(loggedInUser, loginSystem);  // Assuming loggedInUser is the user you are passing to the dashboard
+        frame.dispose();
+        new DashboardUI(loggedInUser, loginSystem);
     }
 
+    // Adds the selected ticket to the user's basket
     public void addSelectedTicketToBasket(viewTickets ticketManager) {
         int selectedIndex = ticketComboBox.getSelectedIndex();
         if (selectedIndex != -1) {
             Integer ticketId = (Integer) tickets.keySet().toArray()[selectedIndex];
-            ticketManager.addToBasket(ticketId);  // Add ticket to the basket
+            ticketManager.addToBasket(ticketId);  
             JOptionPane.showMessageDialog(frame, "Ticket added to basket.");
         } else {
             JOptionPane.showMessageDialog(frame, "Please select a ticket.");
         }
     }
 
-    // This method will format and display the tickets as a string
+    // Formats the tickets into a display-friendly string
     public String formatTicketsForDisplay() {
         StringBuilder output = new StringBuilder();
         for (Integer ticketId : tickets.keySet()) {
