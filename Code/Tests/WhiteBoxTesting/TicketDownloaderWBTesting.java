@@ -1,50 +1,38 @@
 package WhiteBoxTesting;
+
 import login.LoginSystem;
 import login.User;
 import org.junit.jupiter.api.Test;
-
 import UserInterfaces.DashboardUI;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TicketDownloaderWBTesting {
-	@Test
+
+    @Test
+    // Test navigation to the ViewTicketsUI from the DashboardUI
     public void testNavigationToViewTickets() {
-        // Setup: Create a LoginSystem and User
         LoginSystem loginSystem = new LoginSystem();
         User testUser = loginSystem.registerUser("testuser", "password123");
-
-        // Create DashboardUI instance
         DashboardUI dashboardUI = new DashboardUI(testUser, loginSystem);
-
-        // Verify navigation to ViewTicketsUI
-        assertDoesNotThrow(dashboardUI::openViewTicketsUI, "Navigating to ViewTicketsUI should not throw exceptions.");
+        assertDoesNotThrow(dashboardUI::openViewTicketsUI);
     }
 
     @Test
+    // Test navigation to the RefundTicketUI from the DashboardUI
     public void testNavigationToRefundTickets() {
-        // Setup: Create a LoginSystem and User
         LoginSystem loginSystem = new LoginSystem();
         User testUser = loginSystem.registerUser("testuser", "password123");
-
-        // Create DashboardUI instance
         DashboardUI dashboardUI = new DashboardUI(testUser, loginSystem);
-
-        // Verify navigation to RefundTicketUI
-        assertDoesNotThrow(dashboardUI::openRefundTicketUI, "Navigating to RefundTicketUI should not throw exceptions.");
+        assertDoesNotThrow(dashboardUI::openRefundTicketUI);
     }
 
     @Test
+    // Test navigation to the PurchaseBasketUI from the DashboardUI
     public void testNavigationToPurchaseBasket() {
-        // Setup: Create a LoginSystem and User
         LoginSystem loginSystem = new LoginSystem();
         User testUser = loginSystem.registerUser("testuser", "password123");
-
-        // Create DashboardUI instance
         DashboardUI dashboardUI = new DashboardUI(testUser, loginSystem);
-
-        // Verify navigation to PurchaseBasketUI
-        assertDoesNotThrow(dashboardUI::openPurchaseBasketUI, "Navigating to PurchaseBasketUI should not throw exceptions.");
+        assertDoesNotThrow(dashboardUI::openPurchaseBasketUI);
     }
-
 }

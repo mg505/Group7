@@ -9,69 +9,51 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class RefundTicketWBTesting {
-	@Test
+    @Test
     public void testRefundTicketLogic() {
-        // Setup: Create a LoginSystem and User
+        // Validates refund process for valid tickets.
         LoginSystem loginSystem = new LoginSystem();
         User user = loginSystem.registerUser("testuser", "password123");
-
-        // Add a ticket to the user's current tickets
         user.addCurrentTicket("Ticket A");
 
-        // Create RefundTicket instance
         RefundTicket refundTicket = new RefundTicket();
-
-        // Test: Refund the ticket
         boolean success = refundTicket.refundTicket(user, "Ticket A");
 
-        // Validate
-        assertTrue(success, "Refund logic should succeed for valid tickets.");
-        assertFalse(user.getCurrentTickets().contains("Ticket A"), "Ticket A should be removed from current tickets.");
-        assertTrue(user.getExpiredTickets().contains("Ticket A"), "Ticket A should be added to expired tickets.");
+        assertTrue(success);
+        assertFalse(user.getCurrentTickets().contains("Ticket A"));
+        assertTrue(user.getExpiredTickets().contains("Ticket A"));
     }
 
     @Test
     public void testRefundInvalidTicketLogic() {
-        // Setup: Create a LoginSystem and User
+        // Ensures refund fails for invalid tickets.
         LoginSystem loginSystem = new LoginSystem();
         User user = loginSystem.registerUser("testuser", "password123");
 
-        // Create RefundTicket instance
         RefundTicket refundTicket = new RefundTicket();
-
-        // Test: Attempt to refund a ticket not in current tickets
         boolean success = refundTicket.refundTicket(user, "InvalidTicket");
 
-        // Validate
-        assertFalse(success, "Refund logic should fail for invalid tickets.");
+        assertFalse(success);
     }
 
     @Test
     public void testRefundButtonDisablesWhenNoTicketsLeft() {
-        // Setup: Create a LoginSystem and User
+        // Checks UI behavior when no tickets remain for refund.
         LoginSystem loginSystem = new LoginSystem();
         User user = loginSystem.registerUser("testuser", "password123");
-
-        // Add a ticket to the user's current tickets
         user.addCurrentTicket("Ticket A");
 
-        // Simulate RefundTicketUI behavior
         user.getCurrentTickets().remove("Ticket A");
 
-        // Validate
-        assertTrue(user.getCurrentTickets().isEmpty(), "Refund button should disable when no tickets are left.");
+        assertTrue(user.getCurrentTickets().isEmpty());
     }
 
     @Test
     public void testBackToDashboardNavigation() {
-        // Setup: Create a LoginSystem and User
+        // Verifies smooth navigation back to the dashboard.
         LoginSystem loginSystem = new LoginSystem();
         User user = loginSystem.registerUser("testuser", "password123");
 
-        // Simulate navigating back to the Dashboard
-        assertDoesNotThrow(() -> {
-            new DashboardUI(user, loginSystem);
-        }, "Navigating back to Dashboard should not throw exceptions.");
+        assertDoesNotThrow(() -> new DashboardUI(user, loginSystem));
     }
-
 }

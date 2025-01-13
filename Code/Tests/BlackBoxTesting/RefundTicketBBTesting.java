@@ -1,4 +1,5 @@
 package BlackBoxTesting;
+
 import RefundTicket.RefundTicket;
 import login.LoginSystem;
 import login.User;
@@ -7,59 +8,45 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class RefundTicketBBTesting {
-	 @Test
-	    public void testRefundTicketSuccess() {
-	        // Setup: Create a LoginSystem and User
-	        LoginSystem loginSystem = new LoginSystem();
-	        User user = loginSystem.registerUser("testuser", "password123");
 
-	        // Add a ticket to the user's current tickets
-	        user.addCurrentTicket("Ticket A");
+    @Test
+    // Tests successful refund of a valid ticket
+    public void testRefundTicketSuccess() {
+        LoginSystem loginSystem = new LoginSystem();
+        User user = loginSystem.registerUser("testuser", "password123");
+        user.addCurrentTicket("Ticket A");
 
-	        // Create RefundTicket instance
-	        RefundTicket refundTicket = new RefundTicket();
+        RefundTicket refundTicket = new RefundTicket();
+        boolean result = refundTicket.refundTicket(user, "Ticket A");
 
-	        // Test: Refund the ticket
-	        boolean result = refundTicket.refundTicket(user, "Ticket A");
+        assertTrue(result);
+        assertFalse(user.getCurrentTickets().contains("Ticket A"));
+        assertTrue(user.getExpiredTickets().contains("Ticket A"));
+    }
 
-	        // Validate
-	        assertTrue(result, "Refund should succeed for a valid ticket.");
-	        assertFalse(user.getCurrentTickets().contains("Ticket A"), "Ticket A should be removed from current tickets.");
-	        assertTrue(user.getExpiredTickets().contains("Ticket A"), "Ticket A should be added to expired tickets.");
-	    }
+    @Test
+    // Tests failure to refund a non-existent ticket
+    public void testRefundTicketFailure() {
+        LoginSystem loginSystem = new LoginSystem();
+        User user = loginSystem.registerUser("testuser", "password123");
 
-	    @Test
-	    public void testRefundTicketFailure() {
-	        // Setup: Create a LoginSystem and User
-	        LoginSystem loginSystem = new LoginSystem();
-	        User user = loginSystem.registerUser("testuser", "password123");
+        RefundTicket refundTicket = new RefundTicket();
+        boolean result = refundTicket.refundTicket(user, "NonExistentTicket");
 
-	        // Create RefundTicket instance
-	        RefundTicket refundTicket = new RefundTicket();
+        assertFalse(result);
+    }
 
-	        // Test: Attempt to refund a non-existent ticket
-	        boolean result = refundTicket.refundTicket(user, "NonExistentTicket");
+    @Test
+    // Tests updates to dropdown menu after refunding tickets
+    public void testRefundTicketDropdownUpdates() {
+        LoginSystem loginSystem = new LoginSystem();
+        User user = loginSystem.registerUser("testuser", "password123");
+        user.addCurrentTicket("Ticket A");
+        user.addCurrentTicket("Ticket B");
 
-	        // Validate
-	        assertFalse(result, "Refund should fail for a non-existent ticket.");
-	    }
+        user.getCurrentTickets().remove("Ticket A");
 
-	    @Test
-	    public void testRefundTicketDropdownUpdates() {
-	        // Setup: Create a LoginSystem and User
-	        LoginSystem loginSystem = new LoginSystem();
-	        User user = loginSystem.registerUser("testuser", "password123");
-
-	        // Add tickets to the user's current tickets
-	        user.addCurrentTicket("Ticket A");
-	        user.addCurrentTicket("Ticket B");
-
-	        // Simulate RefundTicketUI behavior
-	        user.getCurrentTickets().remove("Ticket A");
-
-	        // Validate
-	        assertFalse(user.getCurrentTickets().contains("Ticket A"), "Ticket A should be removed from dropdown.");
-	        assertTrue(user.getCurrentTickets().contains("Ticket B"), "Ticket B should still be available in dropdown.");
-	    }
-
+        assertFalse(user.getCurrentTickets().contains("Ticket A"));
+        assertTrue(user.getCurrentTickets().contains("Ticket B"));
+    }
 }

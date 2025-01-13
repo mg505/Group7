@@ -1,4 +1,5 @@
 package BlackBoxTesting;
+
 import UserInterfaces.WelcomePage;
 import login.LoginSystem;
 import org.junit.jupiter.api.Test;
@@ -8,33 +9,28 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 public class WelcomePageBBTesting {
 
     @Test
+    // Tests creation of WelcomePage
     public void testWelcomePageCreation() {
-        // Setup: Create a LoginSystem instance
         LoginSystem loginSystem = new LoginSystem();
 
-        // Verify that the WelcomePage UI is created without exceptions
-        assertDoesNotThrow(() -> new WelcomePage(loginSystem), "WelcomePage creation should not throw exceptions.");
+        assertDoesNotThrow(() -> new WelcomePage(loginSystem));
     }
 
     @Test
+    // Tests opening the LogInUI from WelcomePage
     public void testOpenLogInUI() {
-        // Setup: Create a LoginSystem instance
         LoginSystem loginSystem = new LoginSystem();
         WelcomePage welcomePage = new WelcomePage(loginSystem);
 
-        // Verify that opening LogInUI does not throw exceptions
-        assertDoesNotThrow(welcomePage::openLogInUI, "Opening LogInUI should not throw exceptions.");
+        assertDoesNotThrow(welcomePage::openLogInUI);
     }
 
     @Test
+    // Tests opening the SignUpUI from WelcomePage
     public void testOpenSignUpUI() {
-        // Setup: Create a LoginSystem instance
         LoginSystem loginSystem = new LoginSystem();
         WelcomePage welcomePage = new WelcomePage(loginSystem);
 
-        // Verify that opening SignUpUI does not throw exceptions
-        assertDoesNotThrow(() -> {
-            welcomePage.openSignUpUI();
-        }, "Opening SignUpUI should not throw exceptions.");
+        assertDoesNotThrow(() -> welcomePage.openSignUpUI());
     }
 }
